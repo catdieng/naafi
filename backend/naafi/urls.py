@@ -1,0 +1,51 @@
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib import admin
+from django.urls import include, path, reverse_lazy
+from django.views.generic.base import RedirectView
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+from rest_framework.authtoken import views
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Naafi API",
+        default_version="v1",
+        description="Just another SaaS API",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="tehneophyt@gmail.com"),
+        license=openapi.License(name="No License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
+
+urlpatterns = [
+    path(
+        "swagger<format>/", schema_view.without_ui(cache_timeout=0), name="schema-json"
+    ),
+    path(
+        "swagger/",
+        schema_view.with_ui("swagger", cache_timeout=0),
+        name="schema-swagger-ui",
+    ),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("admin/", admin.site.urls),
+    path("api/v1/users/", include("naafi.users.urls")),
+    path("api/v1/login/", views.obtain_auth_token),
+    path("api/v1/utils/", include("naafi.utils.urls")),
+    path("api/v1/invoices/", include("naafi.invoices.urls")),
+    path("api/v1/appointments/", include("naafi.appointments.urls")),
+    path("api/v1/settings/", include("naafi.settings.urls")),
+    # path("api/v1/organizations/", include("naafi.tenants.urls")),
+    # path("api/v1/items/", include("naafi.services.urls")),
+    # path("api/v1/categories/", include("naafi.categories.urls")),
+    # path("api/v1/expenses/", include("naafi.expenses.urls")),
+    # path("api/v1/customers/", include("naafi.customers.urls")),
+    # path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    # the 'api-root' from django rest-frameworks default router
+    # http://www.django-rest-framework.org/api-guide/routers/#defaultrouter
+    path("", RedirectView.as_view(url=reverse_lazy("api-root"), permanent=False)),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
