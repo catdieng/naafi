@@ -15,7 +15,10 @@ function RouteComponent() {
 		<Container maxW="full" h="100vh" display="flex" flexDirection="column">
 			<AppointmentProvider>
 				<Flex justifyContent="space-between" alignItems="center" mb={4}>
-					<PageHeader title="Calendar" />
+					<PageHeader
+						title="Calendar"
+						description="Manages your business schedules"
+					/>
 					<AddAppointment />
 				</Flex>
 

@@ -66,7 +66,6 @@ const FormInvoice = ({
 		defaultValues: { items: [] },
 	});
 
-	// Populate form for edit mode
 	useEffect(() => {
 		if (invoice && mode === "edit") {
 			methods.setValue("customer_id", String(invoice.customer.id));
@@ -76,7 +75,7 @@ const FormInvoice = ({
 			methods.setValue(
 				"items",
 				invoice.items?.map((el) => ({
-					service_id: el.service_id,
+					service_id: String(el.service_id),
 					quantity: String(el.quantity),
 					unit_price: el.unit_price,
 				})),
