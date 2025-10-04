@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from naafi.customers.serializers import CustomerSerializer
+from naafi.services.models import Service
 from naafi.services.serializers import ServiceSerializer
 
 from .models import Appointment
@@ -14,8 +15,15 @@ class AppointmentSerializer(serializers.ModelSerializer):
     customer_id = serializers.PrimaryKeyRelatedField(
         queryset=Appointment.customer.field.related_model.objects.all(),
         source="customer",
+        required=False,
+        allow_null=True,
     )
-    services_ids = serializers.SerializerMethodField()
+    services_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Service.objects.all(),
+        many=True,
+        write_only=True,
+        required=False,
+    )
     services = ServiceSerializer(many=True, read_only=True)
 
     class Meta:
@@ -36,20 +44,22 @@ class AppointmentSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "id",
-            "services_ids",
             "owner",
             "created_at",
             "updated_at",
             "duration",
         ]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Require customer_id only on creation
+        if self.instance is None:  # creation
+            self.fields["customer_id"].required = True
+
     def get_duration(self, obj):
         if obj.duration:
             return int(obj.duration.total_seconds() // 60)  # in minutes
         return None
-
-    def get_services_ids(self, obj):
-        return list(obj.services.values_list("id", flat=True))
 
     def validate(self, data):
         start = data.get("start")
@@ -57,4 +67,5 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if start and end and end <= start:
             raise serializers.ValidationError("End time must be after start time.")
 
+        return data
         return data

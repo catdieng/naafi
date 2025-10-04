@@ -1,9 +1,10 @@
 import { Table, useListCollection } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useEffect, useEffectEvent, useMemo } from "react";
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form";
 import { FiPlusCircle } from "react-icons/fi";
 import { type InvoiceCreate, type InvoiceUpdate, ItemsService } from "@/client";
+import Pending from "../Pending/Pending";
 import { Button } from "../ui/button";
 import EditInvoiceItemRow from "./EditInvoiceItemRow";
 
@@ -31,12 +32,12 @@ const EditInvoiceItem = () => {
 		initialItems: [],
 	});
 
-	const { data: services } = useQuery({
+	const { data: services, isLoading } = useQuery({
 		queryKey: ["itemsAll"],
 		queryFn: ItemsService.readItemsAll,
 	});
 
-	useEffect(() => {
+	const hydrateServicesCollection = useEffectEvent(() => {
 		if (services) {
 			set(
 				services?.results.map((el) => ({
@@ -45,9 +46,17 @@ const EditInvoiceItem = () => {
 				})),
 			);
 		}
+	});
+
+	useEffect(() => {
+		hydrateServicesCollection();
 	}, [services]);
 
-	return (
+	return isLoading ? (
+		<Pending
+			columns={["Service", "Quantity", "UnitPrice", "Sub Total", "Actions"]}
+		/>
+	) : (
 		<>
 			<Table.Root size="sm" variant="outline" my={4} rounded="md">
 				<Table.Header>

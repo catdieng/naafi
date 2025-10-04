@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import {
 	type ApiError,
@@ -66,7 +66,7 @@ const FormInvoice = ({
 		defaultValues: { items: [] },
 	});
 
-	useEffect(() => {
+	const hydrateForm = useEffectEvent(() => {
 		if (invoice && mode === "edit") {
 			methods.setValue("customer_id", String(invoice.customer.id));
 			methods.setValue("invoice_number", invoice.invoice_number);
@@ -81,6 +81,10 @@ const FormInvoice = ({
 				})),
 			);
 		}
+	});
+
+	useEffect(() => {
+		hydrateForm();
 	}, [invoice, mode]);
 
 	const mutation = useMutation({

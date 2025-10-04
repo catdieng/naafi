@@ -4,6 +4,7 @@ import AddAppointment from "@/components/Appointments/AddAppointment";
 import EditAppointment from "@/components/Appointments/EditAppointment";
 import ListAppointments from "@/components/Appointments/ListAppointments";
 import { AppointmentProvider } from "@/components/Appointments/ProviderAppointment";
+import ShowAppointment from "@/components/Appointments/ShowAppointment";
 import PageHeader from "@/components/Common/PageHeader";
 
 export const Route = createFileRoute("/_layout/calendar")({
@@ -24,6 +25,7 @@ function RouteComponent() {
 
 				<ListAppointments />
 				<EditAppointment />
+				<ShowAppointment />
 			</AppointmentProvider>
 		</Container>
 	);

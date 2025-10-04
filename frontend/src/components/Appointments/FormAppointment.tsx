@@ -4,7 +4,9 @@ import { type SubmitHandler, useForm } from "react-hook-form";
 import {
 	type AppointmentCreate,
 	AppointmentCreateSchema,
+	type AppointmentPublic,
 	type AppointmentUpdate,
+	AppointmentUpdateSchema,
 } from "@/client";
 import { SelectCustomer } from "../Common/SelectCustomer";
 import { SelectService } from "../Common/SelectService";
@@ -12,7 +14,7 @@ import { DialogBody, DialogFooter } from "../ui/dialog";
 import { Field } from "../ui/field";
 
 interface FormAppointmentProps {
-	defaultValues?: Partial<AppointmentCreate | AppointmentUpdate>;
+	defaultValues?: Partial<AppointmentPublic | null>;
 	onSubmit: SubmitHandler<AppointmentCreate | AppointmentUpdate>;
 	onCancel: () => void;
 	submitLabel?: string;
@@ -31,10 +33,12 @@ export const FormAppointment = ({
 		register,
 		handleSubmit,
 		formState: { errors, isValid },
-	} = useForm<AppointmentCreate>({
-		mode: "onBlur",
+	} = useForm<AppointmentCreate | AppointmentUpdate>({
+		mode: "all",
 		criteriaMode: "all",
-		resolver: zodResolver(AppointmentCreateSchema),
+		resolver: zodResolver(
+			defaultValues ? AppointmentUpdateSchema : AppointmentCreateSchema,
+		),
 		defaultValues: {
 			...defaultValues,
 			customer_id: defaultValues?.customer_id
@@ -42,6 +46,7 @@ export const FormAppointment = ({
 				: null,
 			start: defaultValues?.start,
 			end: defaultValues?.end,
+			services_ids: defaultValues?.services?.map((e) => String(e.id)) ?? [],
 		},
 	});
 
@@ -75,7 +80,7 @@ export const FormAppointment = ({
 					placeholder="Search and select customer"
 				/>
 				<SelectService
-					name="services"
+					name="services_ids"
 					control={control}
 					label="Services"
 					placeholder="Select services"

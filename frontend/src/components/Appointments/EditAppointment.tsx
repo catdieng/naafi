@@ -5,7 +5,6 @@ import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import {
 	type ApiError,
-	type AppointmentPublic,
 	AppointmentsService,
 	type AppointmentUpdate,
 	AppointmentUpdateSchema,
@@ -27,7 +26,7 @@ const EditAppointment = () => {
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
 
-	const { selectedAppointment, setSelectedAppointment } =
+	const { mode, setMode, selectedAppointment, setSelectedAppointment } =
 		useAppointmentContext();
 
 	const {
@@ -39,22 +38,9 @@ const EditAppointment = () => {
 		resolver: zodResolver(AppointmentUpdateSchema),
 		defaultValues: {
 			description: "",
-			services: [],
+			services_ids: [],
 		},
 	});
-
-	const mapAppointmentToForm = (
-		appointment: AppointmentPublic,
-	): Partial<AppointmentUpdate> => {
-		return {
-			start: appointment.start,
-			end: appointment.end,
-			description: appointment.description ?? "",
-			customer_id: appointment.customer_id,
-			customer: appointment.customer,
-			services: appointment.services_ids?.map((id) => id.toString()) ?? [],
-		};
-	};
 
 	const mutation = useMutation({
 		mutationFn: (data: AppointmentUpdate) => {
@@ -86,9 +72,12 @@ const EditAppointment = () => {
 		<DialogRoot
 			size={{ base: "xs", md: "md" }}
 			placement="center"
-			open={!!selectedAppointment}
+			open={!!selectedAppointment && mode === "edit"}
 			onOpenChange={({ open }) => {
-				if (!open) setSelectedAppointment(null);
+				if (!open) {
+					setMode(null);
+					setSelectedAppointment(null);
+				}
 			}}
 		>
 			<DialogContent>
@@ -97,12 +86,11 @@ const EditAppointment = () => {
 					<DialogCloseTrigger />
 				</DialogHeader>
 				<FormAppointment
-					defaultValues={
-						selectedAppointment ? mapAppointmentToForm(selectedAppointment) : {}
-					}
+					defaultValues={selectedAppointment}
 					onSubmit={onSubmit}
 					onCancel={() => {
 						setIsOpen(false);
+						setMode(null);
 						setSelectedAppointment(null);
 					}}
 					isSubmitting={isSubmitting}

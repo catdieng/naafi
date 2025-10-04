@@ -83,7 +83,7 @@ export const SelectCustomer = ({
 	}, [customer]);
 
 	return (
-		<Box my={4}>
+		<Box my={2}>
 			<Controller
 				control={control}
 				name={name}

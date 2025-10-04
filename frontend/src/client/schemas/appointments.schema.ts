@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { CustomerSchema } from "./customers.schema";
-import { datetimeLocalSchema } from "./date.schema";
+import { datetimeLocalSchema, deriveLocalDateTime } from "./date.schema";
 
 // Principal Schema
 export const AppointmentBaseSchema = z.object({
@@ -26,27 +26,27 @@ export const AppointmentBaseSchema = z.object({
 // Creation  Schema
 export const AppointmentCreateSchema = AppointmentBaseSchema.omit({
 	id: true,
+	customer: true,
+	services: true,
 	owner: true,
 	created_at: true,
 	updated_at: true,
 }).extend({
-	services: z.array(z.string()).optional(),
-	start: datetimeLocalSchema(),
-	end: datetimeLocalSchema(),
+	services_ids: z.array(z.string()).optional(),
 });
 
 // Updation Schema
 export const AppointmentUpdateSchema = AppointmentBaseSchema.partial()
 	.omit({
 		id: true,
+		customer: true,
+		services: true,
 		owner: true,
 		created_at: true,
 		updated_at: true,
 	})
 	.extend({
-		services: z.array(z.string()).optional(),
-		start: datetimeLocalSchema(),
-		end: datetimeLocalSchema(),
+		services_ids: z.array(z.string()).optional(),
 	});
 
 // Schema for API responses (includes related objects)
