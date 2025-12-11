@@ -1,12 +1,4 @@
-import {
-	Button,
-	DialogActionTrigger,
-	DialogTitle,
-	Input,
-	Text,
-	Textarea,
-	VStack,
-} from "@chakra-ui/react";
+import { Input, Link, Text, Textarea, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useId, useState } from "react";
@@ -15,23 +7,35 @@ import { FaPlus } from "react-icons/fa";
 import {
 	type CustomerCreate,
 	CustomerCreateSchema,
+	type CustomerPublic,
 	CustomersService,
 } from "@/client";
 import type { ApiError } from "@/client/core/ApiError";
 import useCustomToast from "@/hooks/useCustomToast";
 import { emailPattern, handleError, telPattern } from "@/utils";
+import { Button } from "../ui/button";
 import {
+	DialogActionTrigger,
 	DialogBody,
 	DialogCloseTrigger,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
 	DialogRoot,
+	DialogTitle,
 	DialogTrigger,
 } from "../ui/dialog";
 import { Field } from "../ui/field";
 
-const AddCustomer = () => {
+type AddCustomerProps = {
+	appearance?: "link" | "button";
+	onCustomerCreated?: (customer: CustomerPublic) => void;
+};
+
+const AddCustomer = ({
+	appearance = "button",
+	onCustomerCreated,
+}: AddCustomerProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
@@ -55,10 +59,11 @@ const AddCustomer = () => {
 	const mutation = useMutation({
 		mutationFn: (data: CustomerCreate) =>
 			CustomersService.createCustomer({ requestBody: data }),
-		onSuccess: () => {
+		onSuccess: (data) => {
 			showSuccessToast("Customer created successfully.");
 			reset();
 			setIsOpen(false);
+			onCustomerCreated?.(data);
 		},
 		onError: (err: ApiError) => {
 			handleError(err);
@@ -80,10 +85,17 @@ const AddCustomer = () => {
 			onOpenChange={({ open }) => setIsOpen(open)}
 		>
 			<DialogTrigger asChild>
-				<Button value="add-customer" size="sm">
-					<FaPlus fontSize="16px" />
-					Add Customer
-				</Button>
+				{appearance === "button" ? (
+					<Button value="add-customer" size="sm">
+						<FaPlus fontSize="16px" />
+						Add Customer
+					</Button>
+				) : (
+					<Link href="#">
+						<FaPlus fontSize="16px" />
+						Add Customer
+					</Link>
+				)}
 			</DialogTrigger>
 			<DialogContent>
 				<form onSubmit={handleSubmit(onSubmit)}>

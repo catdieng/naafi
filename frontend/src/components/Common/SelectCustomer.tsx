@@ -1,8 +1,9 @@
 import { Box, Combobox, useListCollection } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useEffectEvent } from "react";
 import { type Control, Controller } from "react-hook-form";
 import { type CustomerSimplePublic, CustomersService } from "@/client";
+import AddCustomer from "../Customers/AddCustomer";
 import { Field } from "../ui/field";
 
 export interface SelectCustomerProps {
@@ -71,7 +72,7 @@ export const SelectCustomer = ({
 		});
 	};
 
-	useEffect(() => {
+	const onCustomerPropChanged = useEffectEvent(() => {
 		if (customer) {
 			set([
 				{
@@ -80,10 +81,16 @@ export const SelectCustomer = ({
 				},
 			]);
 		}
+	});
+
+	useEffect(() => {
+		if (customer) {
+			onCustomerPropChanged();
+		}
 	}, [customer]);
 
 	return (
-		<Box my={2}>
+		<Box my={4}>
 			<Controller
 				control={control}
 				name={name}
@@ -93,6 +100,20 @@ export const SelectCustomer = ({
 							label={label}
 							invalid={!!fieldState.error}
 							errorText={fieldState.error?.message}
+							extraActions={
+								<AddCustomer
+									appearance="link"
+									onCustomerCreated={(newCustomer) => {
+										set([
+											{
+												label: newCustomer.full_name,
+												value: String(newCustomer.id),
+											},
+										]);
+										field.onChange(String(newCustomer.id));
+									}}
+								/>
+							}
 						>
 							<Combobox.Root
 								defaultValue={customer ? [String(customer.id)] : []}

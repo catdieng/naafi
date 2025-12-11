@@ -57,6 +57,7 @@ const ShowAppointment = () => {
 					hour12: false,
 				})
 			: "-";
+
 	const onEdit = () => {
 		setMode("edit");
 	};

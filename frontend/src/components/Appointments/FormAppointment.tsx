@@ -53,7 +53,6 @@ export const FormAppointment = ({
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<DialogBody>
-				{/* <VStack gap={4}> */}
 				<HStack gap={4} width="100%">
 					<Field
 						required

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
+
 import { useEffect, useState } from "react";
-import { Calendar, dayjsLocalizer, type View } from "react-big-calendar";
+import { Calendar, type View } from "react-big-calendar";
 import withDragAndDrop, {
 	type EventInteractionArgs,
 } from "react-big-calendar/lib/addons/dragAndDrop";
@@ -11,12 +11,11 @@ import {
 	AppointmentsService,
 	type AppointmentUpdate,
 } from "@/client";
+import { useCalendarLocalizer } from "@/hooks/useCalendarLocalizer";
 import useCustomToast from "@/hooks/useCustomToast";
 import { dateToDatetimeLocal, handleError } from "@/utils";
 import EventAppointment from "./EventAppointment";
 import { useAppointmentContext } from "./ProviderAppointment";
-
-const localizer = dayjsLocalizer(dayjs);
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
@@ -41,6 +40,7 @@ function getAppointments({ start, end }: { start: string; end: string }) {
 const ListAppointments = ({ onSelectEvent }: ListAppointments) => {
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
+	const localizer = useCalendarLocalizer();
 	const [currentView, setCurrentView] = useState<View>("week");
 	const [selectedRanges, setSelectedRanges] = useState<Date[] | undefined>();
 	const [currentDate, setCurrentDate] = useState(new Date());
@@ -107,7 +107,6 @@ const ListAppointments = ({ onSelectEvent }: ListAppointments) => {
 		start,
 		end,
 	}: EventInteractionArgs<CalendarEvent>) => {
-		// console.log(event.id);
 		onUpdate({
 			id: event?.id,
 			data: {
@@ -117,9 +116,9 @@ const ListAppointments = ({ onSelectEvent }: ListAppointments) => {
 		});
 	};
 
+	// update ranges on initial load
 	useEffect(() => {
 		const now = new Date();
-
 		if (currentView === "month") {
 			const firstDateOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 			const lastDateOfMonth = new Date(
@@ -138,6 +137,8 @@ const ListAppointments = ({ onSelectEvent }: ListAppointments) => {
 			setRanges(todayAt8AM, todayAt8PM);
 		}
 	}, []);
+
+	if (!localizer) return <div>Loading calendar...</div>;
 
 	return (
 		<DnDCalendar

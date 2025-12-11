@@ -29,6 +29,8 @@ const EditAppointment = () => {
 	const { mode, setMode, selectedAppointment, setSelectedAppointment } =
 		useAppointmentContext();
 
+	const isOpen = !!selectedAppointment && mode === "edit";
+
 	const {
 		reset,
 		formState: { isSubmitting },
@@ -57,7 +59,8 @@ const EditAppointment = () => {
 			showSuccessToast("Appointment updated successfully.");
 			reset();
 			queryClient.invalidateQueries({ queryKey: ["appointments"] });
-			setIsOpen(false);
+			setMode(null);
+			setSelectedAppointment(null);
 		},
 		onError: (error: ApiError) => {
 			handleError(error);
@@ -72,7 +75,7 @@ const EditAppointment = () => {
 		<DialogRoot
 			size={{ base: "xs", md: "md" }}
 			placement="center"
-			open={!!selectedAppointment && mode === "edit"}
+			open={isOpen}
 			onOpenChange={({ open }) => {
 				if (!open) {
 					setMode(null);

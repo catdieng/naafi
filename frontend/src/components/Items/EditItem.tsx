@@ -1,6 +1,7 @@
 import {
 	Button,
 	ButtonGroup,
+	Combobox,
 	createListCollection,
 	DialogActionTrigger,
 	DialogTitle,
@@ -218,40 +219,38 @@ const EditItem = ({ item }: EditItemProps) => {
 									control={control}
 									name="custom_taxes"
 									render={({ field }) => (
-										<Select.Root
+										<Combobox.Root
 											multiple
+											closeOnSelect
+											collection={taxList}
 											name={field.name}
-											value={field.value?.map(String)}
+											value={field.value?.map(String) ?? []}
 											onValueChange={({ value }) => {
 												field.onChange(value.map(String));
 											}}
 											onInteractOutside={() => field.onBlur()}
-											collection={taxList}
-											size="sm"
 										>
-											<Select.HiddenSelect />
-											<Select.Control>
-												<Select.Trigger>
-													<Select.ValueText placeholder="Select taxes" />
-												</Select.Trigger>
-												<Select.IndicatorGroup>
-													<Select.Indicator />
-												</Select.IndicatorGroup>
-											</Select.Control>
-											<Select.Positioner>
-												<Select.Content>
+											<Combobox.Control>
+												<Combobox.Input placeholder={"Select tax or taxes"} />
+												<Combobox.IndicatorGroup>
+													<Combobox.Trigger />
+												</Combobox.IndicatorGroup>
+											</Combobox.Control>
+											<Combobox.Positioner>
+												<Combobox.Content>
+													<Combobox.Empty>No taxes found</Combobox.Empty>
 													{taxList.items.map((taxList) => (
-														<Select.Item
+														<Combobox.Item
 															item={taxList}
 															key={String(taxList.value)}
 														>
 															{taxList.label}
-															<Select.ItemIndicator />
-														</Select.Item>
+															<Combobox.ItemIndicator />
+														</Combobox.Item>
 													))}
-												</Select.Content>
-											</Select.Positioner>
-										</Select.Root>
+												</Combobox.Content>
+											</Combobox.Positioner>
+										</Combobox.Root>
 									)}
 								/>
 							</Field>

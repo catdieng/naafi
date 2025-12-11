@@ -1,16 +1,16 @@
 import {
-	Button,
+	Badge,
+	Combobox,
 	createListCollection,
-	DialogActionTrigger,
-	DialogTitle,
 	HStack,
 	Input,
+	Link,
 	NativeSelect,
 	NumberInput,
-	Select,
 	Text,
 	Textarea,
 	VStack,
+	Wrap,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -20,24 +20,34 @@ import { FaPlus } from "react-icons/fa";
 import {
 	type ItemCreate,
 	ItemCreateSchema,
+	type ItemPublic,
 	ItemsService,
 	TaxesService,
 } from "@/client";
 import type { ApiError } from "@/client/core/ApiError";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
+import { Button } from "../ui/button";
+import { CloseButton } from "../ui/close-button";
 import {
+	DialogActionTrigger,
 	DialogBody,
 	DialogCloseTrigger,
 	DialogContent,
 	DialogFooter,
 	DialogHeader,
 	DialogRoot,
+	DialogTitle,
 	DialogTrigger,
 } from "../ui/dialog";
 import { Field } from "../ui/field";
 
-const AddItem = () => {
+type AddItemProps = {
+	appearance?: "link" | "button";
+	onItemCreated?: (customer: ItemPublic) => void;
+};
+
+const AddItem = ({ appearance = "button", onItemCreated }: AddItemProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
@@ -84,10 +94,11 @@ const AddItem = () => {
 	const mutation = useMutation({
 		mutationFn: (data: ItemCreate) =>
 			ItemsService.createItem({ requestBody: data }),
-		onSuccess: () => {
+		onSuccess: (data) => {
 			showSuccessToast("Item created successfully.");
 			reset();
 			setIsOpen(false);
+			onItemCreated?.(data);
 		},
 		onError: (err: ApiError) => {
 			handleError(err);
@@ -109,13 +120,26 @@ const AddItem = () => {
 			onOpenChange={({ open }) => setIsOpen(open)}
 		>
 			<DialogTrigger asChild>
-				<Button value="add-item" size="sm">
-					<FaPlus fontSize="16px" />
-					Add Item
-				</Button>
+				{appearance === "button" ? (
+					<Button value="add-item" size="sm">
+						<FaPlus fontSize="16px" />
+						Add Item
+					</Button>
+				) : (
+					<Link href="#">
+						<FaPlus fontSize="16px" />
+						Add Item
+					</Link>
+				)}
 			</DialogTrigger>
 			<DialogContent>
-				<form onSubmit={handleSubmit(onSubmit)}>
+				<form
+					onSubmit={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						handleSubmit(onSubmit)(e);
+					}}
+				>
 					<DialogHeader>
 						<DialogTitle>Add Item</DialogTitle>
 					</DialogHeader>
@@ -130,7 +154,9 @@ const AddItem = () => {
 								<NativeSelect.Root>
 									<NativeSelect.Field
 										id={useId()}
-										{...register("category_id", { valueAsNumber: true })}
+										{...register("category_id", {
+											setValueAs: (v) => (v === "" ? undefined : Number(v)),
+										})}
 										placeholder="Select category"
 									>
 										{categories?.results.map((category) => (
@@ -172,7 +198,7 @@ const AddItem = () => {
 												name={field.name}
 												value={field.value}
 												onValueChange={({ value }) => {
-													field.onChange(parseFloat(value));
+													field.onChange(String(parseFloat(value ?? "0")));
 												}}
 											>
 												<NumberInput.Control />
@@ -195,7 +221,8 @@ const AddItem = () => {
 												name={field.name}
 												value={field.value}
 												onValueChange={({ value }) => {
-													field.onChange(parseFloat(value));
+													const num = parseFloat(value);
+													field.onChange(Number.isNaN(num) ? "0" : String(num));
 												}}
 											>
 												<NumberInput.Control />
@@ -215,41 +242,64 @@ const AddItem = () => {
 									control={control}
 									name="custom_taxes"
 									render={({ field }) => (
-										<Select.Root<{ label: string; value: number }>
-											multiple
-											name={field.name}
-											value={field.value}
-											onValueChange={({ value }) => {
-												console.log("value", value);
-												field.onChange(value.map(String));
-											}}
-											onInteractOutside={() => field.onBlur()}
-											collection={taxList}
-											size="sm"
-										>
-											<Select.HiddenSelect />
-											<Select.Control>
-												<Select.Trigger>
-													<Select.ValueText placeholder="Select taxes" />
-												</Select.Trigger>
-												<Select.IndicatorGroup>
-													<Select.Indicator />
-												</Select.IndicatorGroup>
-											</Select.Control>
-											<Select.Positioner>
-												<Select.Content>
-													{taxList.items.map((taxList) => (
-														<Select.Item
-															item={taxList}
-															key={String(taxList.value)}
-														>
-															{taxList.label}
-															<Select.ItemIndicator />
-														</Select.Item>
-													))}
-												</Select.Content>
-											</Select.Positioner>
-										</Select.Root>
+										<>
+											<Wrap gap="2">
+												{(Array.isArray(field.value) ? field.value : []).map(
+													(id: string) => {
+														const tax = taxes?.results.find(
+															(el) => String(el.id) === String(id),
+														);
+														return tax ? (
+															<Badge key={id}>
+																{tax.name}
+																<CloseButton
+																	size="2xs"
+																	onClick={() =>
+																		field.onChange(
+																			(Array.isArray(field.value)
+																				? field.value
+																				: []
+																			).filter((item) => item !== id),
+																		)
+																	}
+																/>
+															</Badge>
+														) : null;
+													},
+												)}
+											</Wrap>
+											<Combobox.Root
+												multiple
+												closeOnSelect
+												collection={taxList}
+												value={field.value ?? []}
+												onValueChange={({ value }) => {
+													field.onChange(value.map(String));
+												}}
+												onInteractOutside={() => field.onBlur()}
+											>
+												<Combobox.Control>
+													<Combobox.Input placeholder={"Select tax or taxes"} />
+													<Combobox.IndicatorGroup>
+														<Combobox.Trigger />
+													</Combobox.IndicatorGroup>
+												</Combobox.Control>
+												<Combobox.Positioner>
+													<Combobox.Content>
+														<Combobox.Empty>No taxes found</Combobox.Empty>
+														{taxList.items.map((taxList) => (
+															<Combobox.Item
+																item={taxList}
+																key={String(taxList.value)}
+															>
+																{taxList.label}
+																<Combobox.ItemIndicator />
+															</Combobox.Item>
+														))}
+													</Combobox.Content>
+												</Combobox.Positioner>
+											</Combobox.Root>
+										</>
 									)}
 								/>
 							</Field>

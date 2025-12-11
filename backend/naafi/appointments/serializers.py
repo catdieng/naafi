@@ -56,6 +56,27 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if self.instance is None:  # creation
             self.fields["customer_id"].required = True
 
+    def create(self, validated_data):
+        # Extract services from validated data
+        services = validated_data.pop("services_ids", [])
+        appointment = Appointment.objects.create(**validated_data)
+
+        # Assign the many-to-many relationship
+        if services:
+            appointment.services.set(services)
+
+        return appointment
+
+    def update(self, instance, validated_data):
+        # Handle services update properly
+        services = validated_data.pop("services_ids", None)
+        instance = super().update(instance, validated_data)
+
+        if services is not None:
+            instance.services.set(services)
+
+        return instance
+
     def get_duration(self, obj):
         if obj.duration:
             return int(obj.duration.total_seconds() // 60)  # in minutes
@@ -67,5 +88,4 @@ class AppointmentSerializer(serializers.ModelSerializer):
         if start and end and end <= start:
             raise serializers.ValidationError("End time must be after start time.")
 
-        return data
         return data

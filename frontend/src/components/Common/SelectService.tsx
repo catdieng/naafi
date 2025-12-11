@@ -6,9 +6,10 @@ import {
 	Wrap,
 } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useEffectEvent } from "react";
 import { type Control, Controller } from "react-hook-form";
 import { ItemsService } from "@/client";
+import AddItem from "../Items/AddItem";
 import { Field } from "../ui/field";
 
 export interface SelectServiceProps {
@@ -52,7 +53,7 @@ export const SelectService = ({
 		);
 	};
 
-	useEffect(() => {
+	const onServicesLoaded = useEffectEvent(() => {
 		if (services) {
 			set(
 				services.results.map((item) => ({
@@ -61,7 +62,13 @@ export const SelectService = ({
 				})),
 			);
 		}
-	}, [services, set]);
+	});
+
+	useEffect(() => {
+		if (services) {
+			onServicesLoaded();
+		}
+	}, [services]);
 
 	return (
 		<Controller
@@ -73,6 +80,21 @@ export const SelectService = ({
 						label={label}
 						invalid={!!fieldState.error}
 						errorText={fieldState.error?.message}
+						extraActions={
+							<AddItem
+								appearance="link"
+								onItemCreated={(newItem) => {
+									set([
+										...collection.items,
+										{
+											label: newItem.name,
+											value: String(newItem.id),
+										},
+									]);
+									field.onChange([...field.value, String(newItem.id)]);
+								}}
+							/>
+						}
 					>
 						<Wrap gap="2">
 							{field.value?.map((id: string) => {
@@ -96,15 +118,12 @@ export const SelectService = ({
 						</Wrap>
 						<Combobox.Root
 							multiple
-							closeOnSelect
 							collection={collection}
 							value={field.value ?? []}
 							onValueChange={({ value }) => {
-								console.log("value", value);
 								field.onChange(value);
 							}}
 							onInputValueChange={handleInputChange}
-							onInteractOutside={() => field.onBlur()}
 						>
 							<Combobox.Control>
 								<Combobox.Input placeholder={placeholder} />
@@ -115,16 +134,13 @@ export const SelectService = ({
 
 							<Combobox.Positioner>
 								<Combobox.Content>
-									<Combobox.ItemGroup>
-										<Combobox.ItemGroupLabel>Services</Combobox.ItemGroupLabel>
-										<Combobox.Empty>No services found</Combobox.Empty>
-										{collection.items.map((item) => (
-											<Combobox.Item key={item.value} item={item}>
-												{item.label}
-												<Combobox.ItemIndicator />
-											</Combobox.Item>
-										))}
-									</Combobox.ItemGroup>
+									<Combobox.Empty>No services found</Combobox.Empty>
+									{collection.items.map((item) => (
+										<Combobox.Item key={item.value} item={item}>
+											{item.label}
+											<Combobox.ItemIndicator />
+										</Combobox.Item>
+									))}
 								</Combobox.Content>
 							</Combobox.Positioner>
 						</Combobox.Root>

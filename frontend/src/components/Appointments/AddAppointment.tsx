@@ -1,4 +1,3 @@
-import { DialogTitle } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
@@ -19,6 +18,7 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogRoot,
+	DialogTitle,
 	DialogTrigger,
 } from "../ui/dialog";
 import { FormAppointment } from "./FormAppointment";
@@ -54,7 +54,8 @@ const AddAppointment = () => {
 	});
 
 	const onSubmit: SubmitHandler<AppointmentCreate> = (data) => {
-		mutation.mutate(data);
+		console.log("Submitted data:", data);
+		// mutation.mutate(data);
 	};
 
 	return (
