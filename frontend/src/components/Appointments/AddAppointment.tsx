@@ -43,10 +43,12 @@ const AddAppointment = () => {
 		mutationFn: (data: AppointmentCreate) =>
 			AppointmentsService.createAppointment({ requestBody: data }),
 		onSuccess: () => {
+			setIsOpen(false);
 			showSuccessToast("Appointment created successfully.");
 			reset();
 			queryClient.invalidateQueries({ queryKey: ["appointments"] });
 			setIsOpen(false);
+			setSelectedSlot(null);
 		},
 		onError: (error: ApiError) => {
 			handleError(error);
@@ -54,8 +56,7 @@ const AddAppointment = () => {
 	});
 
 	const onSubmit: SubmitHandler<AppointmentCreate> = (data) => {
-		console.log("Submitted data:", data);
-		// mutation.mutate(data);
+		mutation.mutate(data);
 	};
 
 	return (
