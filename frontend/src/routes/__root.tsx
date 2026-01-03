@@ -1,4 +1,4 @@
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { createRootRoute, HeadContent, Outlet } from "@tanstack/react-router";
 import React, { Suspense } from "react";
 
 import NotFound from "@/components/Common/NotFound";
@@ -22,8 +22,21 @@ const TanStackDevtools =
 	process.env.NODE_ENV === "production" ? () => null : React.lazy(loadDevtools);
 
 export const Route = createRootRoute({
+	head: () => ({
+		title: "Naafi",
+		meta: [
+			{
+				title: "Naafi",
+			},
+			{
+				name: "description",
+				content: "Naafi Application",
+			},
+		],
+	}),
 	component: () => (
 		<>
+			<HeadContent />
 			<Outlet />
 			<Suspense>
 				<TanStackDevtools />

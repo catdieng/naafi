@@ -1,40 +1,49 @@
 import { Box, Combobox, useListCollection } from "@chakra-ui/react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useEffectEvent } from "react";
 import { type Control, Controller } from "react-hook-form";
-import { type CustomerSimplePublic, CustomersService } from "@/client";
+import { type CustomerPublic, CustomersService } from "@/client";
 import AddCustomer from "../Customers/AddCustomer";
 import { Field } from "../ui/field";
 
 export interface SelectCustomerProps {
+	required?: boolean;
 	name: string;
 	control: Control<any>;
 	label?: string;
-	customer?: CustomerSimplePublic | null;
+	customer?: CustomerPublic | null;
 	placeholder?: string;
+	onClear?: () => void;
 }
 
 export const SelectCustomer = ({
+	required,
 	customer,
 	name,
 	control,
 	label,
 	placeholder,
+	onClear,
 }: SelectCustomerProps) => {
 	const queryClient = useQueryClient();
 
 	const { collection, set } = useListCollection<{
 		label: string;
-		value: string;
+		value: number;
 	}>({
 		initialItems: customer
 			? [
 					{
 						label: customer.full_name,
-						value: String(customer.id),
+						value: customer.id,
 					},
 				]
 			: [],
+	});
+
+	const { data: customers, isLoading } = useQuery({
+		queryFn: () => CustomersService.readCustomers(),
+		queryKey: ["customers"],
 	});
 
 	const handleInputChange = (details: Combobox.InputValueChangeDetails) => {
@@ -49,15 +58,17 @@ export const SelectCustomer = ({
 			return [];
 		}
 
-		const data = await CustomersService.searchCustomer({ search });
+		const data = await CustomersService.readCustomers({ search });
 
 		if (data.results) {
 			set(
 				data.results.map((el) => ({
 					label: el.full_name,
-					value: String(el.id),
+					value: el.id,
 				})),
 			);
+		} else {
+			onCustomersLoaded();
 		}
 
 		return data.results;
@@ -77,10 +88,17 @@ export const SelectCustomer = ({
 			set([
 				{
 					label: customer.full_name,
-					value: String(customer.id),
+					value: customer.id,
 				},
 			]);
 		}
+	});
+
+	const onCustomersLoaded = useEffectEvent(() => {
+		set(
+			customers?.results.map((c) => ({ label: c.full_name, value: c.id })) ??
+				[],
+		);
 	});
 
 	useEffect(() => {
@@ -89,14 +107,24 @@ export const SelectCustomer = ({
 		}
 	}, [customer]);
 
+	useEffect(() => {
+		if (customers) {
+			onCustomersLoaded();
+		}
+	}, [customers]);
+
 	return (
 		<Box my={4}>
 			<Controller
 				control={control}
 				name={name}
+				rules={{
+					required: "Customer is required",
+				}}
 				render={({ field, fieldState }) => (
 					<>
 						<Field
+							required={required}
 							label={label}
 							invalid={!!fieldState.error}
 							errorText={fieldState.error?.message}
@@ -107,7 +135,7 @@ export const SelectCustomer = ({
 										set([
 											{
 												label: newCustomer.full_name,
-												value: String(newCustomer.id),
+												value: newCustomer.id,
 											},
 										]);
 										field.onChange(String(newCustomer.id));
@@ -116,11 +144,15 @@ export const SelectCustomer = ({
 							}
 						>
 							<Combobox.Root
+								disabled={isLoading}
 								defaultValue={customer ? [String(customer.id)] : []}
 								collection={collection}
 								value={field.value ? [field.value] : []}
 								onValueChange={({ value }) => {
-									field.onChange(value[0] ?? "");
+									field.onChange(value[0]);
+									if (!value[0]) {
+										onClear?.();
+									}
 								}}
 								onInputValueChange={handleInputChange}
 							>

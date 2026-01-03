@@ -9,7 +9,6 @@ import {
 	Input,
 	NativeSelect,
 	NumberInput,
-	Select,
 	Text,
 	Textarea,
 	VStack,

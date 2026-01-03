@@ -9,9 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useId, useState } from "react";
+import { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
-import { FiEdit3 } from "react-icons/fi";
 import {
 	type CustomerCreate,
 	CustomerCreateSchema,
@@ -28,22 +27,21 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogRoot,
-	DialogTrigger,
 } from "../ui/dialog";
 import { Field } from "../ui/field";
 
 interface EditCustomerProps {
 	customer: CustomerPublic;
+	onClose: () => void;
+	open: boolean;
 }
 
-const EditCustomer = ({ customer }: EditCustomerProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+const EditCustomer = ({ customer, open, onClose }: EditCustomerProps) => {
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
 	const {
 		register,
 		handleSubmit,
-		reset,
 		formState: { errors, isValid, isSubmitting },
 	} = useForm<CustomerCreate>({
 		mode: "onBlur",
@@ -58,9 +56,8 @@ const EditCustomer = ({ customer }: EditCustomerProps) => {
 		mutationFn: (data: CustomerCreate) =>
 			CustomersService.createCustomer({ requestBody: data }),
 		onSuccess: () => {
+			onClose();
 			showSuccessToast("Customer updated successfully.");
-			reset();
-			setIsOpen(false);
 		},
 		onError: (err: ApiError) => {
 			handleError(err);
@@ -78,15 +75,9 @@ const EditCustomer = ({ customer }: EditCustomerProps) => {
 		<DialogRoot
 			size={{ base: "xs", md: "md" }}
 			placement="center"
-			open={isOpen}
-			onOpenChange={({ open }) => setIsOpen(open)}
+			open={open}
+			onOpenChange={({ open }) => !open && onClose()}
 		>
-			<DialogTrigger asChild>
-				<Button variant="ghost" value="edit-customer">
-					<FiEdit3 />
-					Edit Customer
-				</Button>
-			</DialogTrigger>
 			<DialogContent>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<DialogHeader>

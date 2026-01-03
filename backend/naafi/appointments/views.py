@@ -13,6 +13,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         queryset = (
             Appointment.objects.all()
             .select_related("customer", "owner")
+            .select_related("vehicle")
             .prefetch_related("services")
         )
 

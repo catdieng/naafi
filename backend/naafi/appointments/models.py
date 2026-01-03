@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.db import models
+from safedelete import SOFT_DELETE
+from safedelete.models import SafeDeleteModel
 
 from naafi.customers.models import Customer
 from naafi.services.models import Service
@@ -8,7 +10,17 @@ from naafi.services.models import Service
 User = get_user_model()
 
 
-class Appointment(models.Model):
+class AppointmentStatus(models.TextChoices):
+    TODO = "todo", "To do"
+    IN_PROGRESS = "in_progress", "In progress"
+    WAITING_PARTS = "waiting_parts", "Waiting parts"
+    DONE = "done", "Done"
+    CANCELLED = "cancelled", "Cancelled"
+
+
+class Appointment(SafeDeleteModel):
+    _safedelete_policy = SOFT_DELETE
+
     customer = models.ForeignKey(
         Customer,
         on_delete=models.SET_NULL,
@@ -16,8 +28,20 @@ class Appointment(models.Model):
         null=True,
         blank=True,
     )
+    vehicle = models.ForeignKey(
+        "vehicles.Vehicle",
+        on_delete=models.SET_NULL,
+        related_name="appointments",
+        null=True,
+        blank=True,
+    )
     start = models.DateTimeField()
     end = models.DateTimeField()
+    status = models.CharField(
+        max_length=20,
+        choices=AppointmentStatus.choices,
+        default=AppointmentStatus.TODO,
+    )
     description = models.TextField(blank=True, null=True)
     services = models.ManyToManyField(Service, related_name="appointments")
     owner = models.ForeignKey(

@@ -8,6 +8,7 @@ import {
 	type ApiError,
 	type AppointmentCreate,
 	AppointmentCreateSchema,
+	type AppointmentFormValues,
 	AppointmentsService,
 } from "@/client";
 import useCustomToast from "@/hooks/useCustomToast";
@@ -55,8 +56,11 @@ const AddAppointment = () => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<AppointmentCreate> = (data) => {
-		mutation.mutate(data);
+	const onSubmit: SubmitHandler<AppointmentFormValues> = (data) => {
+		mutation.mutate({
+			...(data as AppointmentCreate),
+			vehicle_id: data.vehicle?.value,
+		});
 	};
 
 	return (

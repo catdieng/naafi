@@ -33,6 +33,8 @@ class CategorySerializer(serializers.ModelSerializer):
             "parent_category",
             "default_taxes",
             "default_taxes_details",
+            "created_at",
+            "updated_at",
         ]
         read_only_fields = (
             "slug",

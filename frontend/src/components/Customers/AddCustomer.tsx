@@ -83,6 +83,9 @@ const AddCustomer = ({
 			placement="center"
 			open={isOpen}
 			onOpenChange={({ open }) => setIsOpen(open)}
+			onRequestDismiss={() => {
+				reset();
+			}}
 		>
 			<DialogTrigger asChild>
 				{appearance === "button" ? (

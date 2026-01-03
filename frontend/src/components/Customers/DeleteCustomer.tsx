@@ -1,6 +1,5 @@
 import { Button, DialogTitle, Text } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FiTrash2 } from "react-icons/fi";
 
@@ -17,8 +16,13 @@ import {
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
 
-const DeleteCustomer = ({ id }: { id: number }) => {
-	const [isOpen, setIsOpen] = useState(false);
+interface DeleteCustomerProps {
+	id: number;
+	open: boolean;
+	onClose: () => void;
+}
+
+const DeleteCustomer = ({ id, open, onClose }: DeleteCustomerProps) => {
 	const queryClient = useQueryClient();
 	const { showSuccessToast, showErrorToast } = useCustomToast();
 	const {
@@ -34,7 +38,6 @@ const DeleteCustomer = ({ id }: { id: number }) => {
 		mutationFn: deleteCustomer,
 		onSuccess: () => {
 			showSuccessToast("The expense was deleted successfully");
-			setIsOpen(false);
 		},
 		onError: () => {
 			showErrorToast("An error occurred while deleting the expense");
@@ -53,8 +56,8 @@ const DeleteCustomer = ({ id }: { id: number }) => {
 			size={{ base: "xs", md: "md" }}
 			placement="center"
 			role="alertdialog"
-			open={isOpen}
-			onOpenChange={({ open }) => setIsOpen(open)}
+			open={open}
+			onOpenChange={({ open }) => !open && onClose()}
 		>
 			<DialogTrigger asChild>
 				<Button variant="ghost" size="sm" colorPalette="red">

@@ -1,8 +1,9 @@
 import { Box, Collapsible, Flex, Icon, Text } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink } from "@tanstack/react-router";
-import { FaBuilding, FaFileInvoice } from "react-icons/fa";
+import { FaBuilding, FaCar, FaFileInvoice } from "react-icons/fa";
 import {
+	FiActivity,
 	FiBook,
 	FiBox,
 	FiCalendar,
@@ -38,14 +39,14 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 	const finalItems: Item[] = currentUser?.tenant_id
 		? [
 				...items,
+				{ icon: FiActivity, title: "Activity", path: "/activity" },
 				{ icon: FiCalendar, title: "Calendar", path: "/calendar" },
-				{ icon: FiBook, title: "Customers", path: "/customers" },
+				{ icon: FiUsers, title: "Customers", path: "/customers" },
 				{ icon: FiBox, title: "Items", path: "/items" },
 				{ icon: FiFileText, title: "Invoices", path: "/invoices/" },
 				{ icon: FiDollarSign, title: "Expenses", path: "/expenses" },
 				{ icon: FiGrid, title: "Categories", path: "/categories" },
 				{ icon: FiUsers, title: "Users", path: "/users" },
-				{ icon: FiSettings, title: "Settings", path: "/settings" },
 			]
 		: items;
 
@@ -69,31 +70,32 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 		</RouterLink>
 	));
 
-	// const settingItems: Item[] = [
-	// 	{ icon: FaBuilding, title: "Organization", path: "/settings/organization" },
-	// 	{ icon: FaFileInvoice, title: "Billing", path: "/settings/billing" },
-	// 	{ icon: FiDollarSign, title: "Taxes", path: "/settings/taxes" },
-	// ];
+	const settingItems: Item[] = [
+		{ icon: FaFileInvoice, title: "Billing", path: "/settings/billing" },
+		{ icon: FaBuilding, title: "Organization", path: "/settings/organization" },
+		{ icon: FiDollarSign, title: "Taxes", path: "/settings/taxes" },
+		{ icon: FaCar, title: "Vehicle Brands", path: "/settings/vehicles-brands" },
+	];
 
-	// const settingListItems = settingItems.map(({ icon, title, path }) => (
-	// 	<RouterLink key={title} to={path} onClick={onClose}>
-	// 		<Flex
-	// 			gap={4}
-	// 			px={4}
-	// 			py={2}
-	// 			_hover={{
-	// 				background: "gray.subtle",
-	// 			}}
-	// 			alignItems="center"
-	// 			fontSize="sm"
-	// 		>
-	// 			<Icon as={icon} alignSelf="center" />
-	// 			<Text ml={1} fontWeight="semibold" fontSize="sm" color="#585858">
-	// 				{title}
-	// 			</Text>
-	// 		</Flex>
-	// 	</RouterLink>
-	// ));
+	const settingListItems = settingItems.map(({ icon, title, path }) => (
+		<RouterLink key={title} to={path} onClick={onClose}>
+			<Flex
+				gap={4}
+				px={4}
+				py={2}
+				_hover={{
+					background: "gray.subtle",
+				}}
+				alignItems="center"
+				fontSize="sm"
+			>
+				<Icon as={icon} alignSelf="center" />
+				<Text ml={1} fontWeight="semibold" fontSize="sm" color="#585858">
+					{title}
+				</Text>
+			</Flex>
+		</RouterLink>
+	));
 
 	return (
 		<>
@@ -102,7 +104,7 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 			</Text>
 			<Box>
 				{listItems}
-				{/* <Collapsible.Root>
+				<Collapsible.Root>
 					<Collapsible.Trigger>
 						<Flex
 							gap={4}
@@ -126,7 +128,7 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 					<Collapsible.Content width="xs">
 						<Box paddingX="8">{settingListItems}</Box>
 					</Collapsible.Content>
-				</Collapsible.Root> */}
+				</Collapsible.Root>
 			</Box>
 		</>
 	);

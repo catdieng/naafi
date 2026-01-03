@@ -29,6 +29,7 @@ class Common(Configuration):
         "django_filters",  # for filtering rest endpoints
         "django_structlog",  # for logging
         "drf_yasg",  # for swagger
+        "safedelete",
     )
 
     TENANT_APPS = (
@@ -41,6 +42,7 @@ class Common(Configuration):
         "naafi.invoices",
         "naafi.appointments",
         "naafi.settings",
+        "naafi.vehicles",
     )
 
     INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS]

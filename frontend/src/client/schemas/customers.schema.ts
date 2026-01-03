@@ -19,6 +19,8 @@ export const CustomerSimpleSchema = CustomerBaseSchema.omit({
 	created_at: true,
 	updated_at: true,
 	owner: true,
+}).extend({
+	id: z.number(),
 });
 
 // Schema for creating a new customer (omits auto-generated fields)

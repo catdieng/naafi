@@ -5,7 +5,7 @@ import BillingSettings from "@/components/Settings/BillingSettings";
 import OrganizationSettings from "@/components/Settings/OrganizationSettings";
 import TaxesSettings from "@/components/Settings/TaxesSettings";
 
-export const Route = createFileRoute("/_layout/settings")({
+export const Route = createFileRoute("/_layout/setting")({
 	component: Settings,
 });
 
@@ -50,5 +50,5 @@ function Settings() {
 				</Tabs.Content>
 			</Tabs.Root>
 		</Container>
-	);
+	)
 }

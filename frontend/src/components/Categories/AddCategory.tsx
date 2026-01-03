@@ -57,7 +57,7 @@ const AddCategory = () => {
 		resolver: zodResolver(CategoryCreateSchema),
 		defaultValues: {
 			name: "",
-			parent: 0,
+			parent: null,
 			default_taxes: [],
 		},
 	});

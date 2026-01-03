@@ -219,6 +219,19 @@ wheels = [
 ]
 
 [[package]]
+name = "django-safedelete"
+version = "1.4.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "packaging" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a8/f0/d1a4ade3d89946445bdbe103fa376371dbaee0c94ae0cb570c7383ac7950/django_safedelete-1.4.1.tar.gz", hash = "sha256:f5919d627519fd6d766a3616ee15554a19e13edcb5f7fb9d86503cd71a6986d0", size = 32570, upload-time = "2025-03-05T08:39:44.932Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/25/68/26c713fca48ba7b631b64f14e9d3057cecb5b3aba93d8d05554fcf6bb5e5/django_safedelete-1.4.1-py3-none-any.whl", hash = "sha256:c4232445e4ec3a2b72ac9002130377088c8e541bba5a5af4cf8936ec3ff0afde", size = 44084, upload-time = "2025-03-05T08:39:43.497Z" },
+]
+
+[[package]]
 name = "django-storages"
 version = "1.14.4"
 source = { registry = "https://pypi.org/simple" }
@@ -301,6 +314,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/2c/ce/31482eb688bdb4e271027076199e1aa8d02507e530b6d272ab8b4481557c/djangorestframework-3.15.2.tar.gz", hash = "sha256:36fe88cd2d6c6bec23dca9804bab2ba5517a8bb9d8f47ebc68981b56840107ad", size = 1067420, upload-time = "2024-06-19T07:59:32.891Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/7c/b6/fa99d8f05eff3a9310286ae84c4059b08c301ae4ab33ae32e46e8ef76491/djangorestframework-3.15.2-py3-none-any.whl", hash = "sha256:2b8871b062ba1aefc2de01f773875441a961fefbf79f5eed1e32b2f096944b20", size = 1071235, upload-time = "2024-06-19T07:59:26.106Z" },
+]
+
+[[package]]
+name = "drf-nested-routers"
+version = "0.95.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+    { name = "djangorestframework" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/ff/b2/070908ccd41bd6f025f5507d7f6e50009abe8be48393cc697d159b539f0b/drf_nested_routers-0.95.0.tar.gz", hash = "sha256:815978f802e578fd7035c74040c104909cbe97615de89a275d77e928f4029891", size = 23318, upload-time = "2025-09-09T02:01:58.201Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/3e/61/69d951a6e8031389f5feade38531432325019e1047b23d5c6036a86c5e8f/drf_nested_routers-0.95.0-py2.py3-none-any.whl", hash = "sha256:dd489c33d667aaa81383ffaa8c74781d2b353d8f0795716ae37fc59ee297b7c4", size = 36407, upload-time = "2025-09-09T02:01:56.999Z" },
 ]
 
 [[package]]
@@ -638,11 +664,13 @@ dependencies = [
     { name = "django-filter" },
     { name = "django-model-utils" },
     { name = "django-mptt" },
+    { name = "django-safedelete" },
     { name = "django-storages" },
     { name = "django-structlog" },
     { name = "django-tenants" },
     { name = "django-unique-upload" },
     { name = "djangorestframework" },
+    { name = "drf-nested-routers" },
     { name = "drf-yasg" },
     { name = "gunicorn" },
     { name = "newrelic" },
@@ -677,12 +705,14 @@ requires-dist = [
     { name = "django-filter", specifier = "==24.3" },
     { name = "django-model-utils", specifier = "==5.0.0" },
     { name = "django-mptt", specifier = ">=0.17.0" },
+    { name = "django-safedelete", specifier = ">=1.4.1" },
     { name = "django-storages", specifier = "==1.14.4" },
     { name = "django-structlog", specifier = "==9.1.1" },
     { name = "django-stubs", marker = "extra == 'dev'", specifier = ">=3.33.0" },
     { name = "django-tenants", specifier = "==3.8.0" },
     { name = "django-unique-upload", specifier = "==0.2.1" },
     { name = "djangorestframework", specifier = "==3.15.2" },
+    { name = "drf-nested-routers", specifier = ">=0.95.0" },
     { name = "drf-yasg", specifier = "==1.21.10" },
     { name = "factory-boy", marker = "extra == 'dev'", specifier = "==3.3.1" },
     { name = "flake8", marker = "extra == 'dev'", specifier = "==7.1.1" },

@@ -80,7 +80,7 @@ const AddTax = () => {
 			onOpenChange={({ open }) => setIsOpen(open)}
 		>
 			<DialogTrigger asChild>
-				<Button value="add-tax">
+				<Button value="add-tax" size="sm">
 					<FaPlus fontSize="16px" />
 					Add Tax
 				</Button>

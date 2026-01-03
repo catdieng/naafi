@@ -1,5 +1,6 @@
 export * from "./appointments.service";
 export * from "./auth.service";
+export * from "./brands.service";
 export * from "./categories.service";
 export * from "./customers.service";
 export * from "./expenses.service";

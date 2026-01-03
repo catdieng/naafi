@@ -1,0 +1,13 @@
+{
+  "rules": [
+    "Backend is Django + Django REST Framework.",
+    "Frontend uses an OpenAPI client generated from Django.",
+    "client/ is auto-generated and read-only.",
+    "Each frontend feature mirrors a Django app.",
+    "TanStack Router uses file-based routing in routes/.",
+    "routes/ must not contain business logic.",
+    "features/ contains domain logic (hooks, services, components).",
+    "components/ contains generic UI only.",
+    "DRFTable is a shared internal table framework."
+  ]
+}

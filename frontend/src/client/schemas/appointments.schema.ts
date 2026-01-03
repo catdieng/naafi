@@ -1,14 +1,19 @@
 import { z } from "zod";
 import { CustomerSchema } from "./customers.schema";
-import { datetimeLocalSchema, deriveLocalDateTime } from "./date.schema";
+import { datetimeLocalSchema } from "./date.schema";
+import { OptionSchema } from "./form.schema";
+import { VehicleSchema } from "./vehicules.schema";
 
 // Principal Schema
 export const AppointmentBaseSchema = z.object({
 	id: z.number().int().positive().optional(),
-	customer_id: z.string().nullable().optional(),
+	customer_id: z.number().nullable().optional(),
 	customer: CustomerSchema.nullable().optional(),
+	vehicle_id: z.number().nullable().optional(),
+	vehicle: VehicleSchema.nullable().optional(),
 	start: datetimeLocalSchema(),
 	end: datetimeLocalSchema(),
+	status: z.string().optional(),
 	description: z.string().max(250).optional(),
 	services: z
 		.array(
@@ -28,9 +33,7 @@ export const AppointmentCreateSchema = AppointmentBaseSchema.omit({
 	id: true,
 	customer: true,
 	services: true,
-	owner: true,
-	created_at: true,
-	updated_at: true,
+	vehicle: true,
 }).extend({
 	services_ids: z.array(z.string()).optional(),
 });
@@ -42,12 +45,21 @@ export const AppointmentUpdateSchema = AppointmentBaseSchema.partial()
 		customer: true,
 		services: true,
 		owner: true,
-		created_at: true,
-		updated_at: true,
+		vehicle: true,
 	})
 	.extend({
 		services_ids: z.array(z.string()).optional(),
 	});
+
+// Form Schema
+export const AppointmentFormSchema = z.object({
+	start: z.string(),
+	end: z.string(),
+	customer_id: z.number().nullable(),
+	vehicle: OptionSchema.nullable(),
+	services_ids: z.array(z.string()).optional(),
+	description: z.string().optional(),
+});
 
 // Schema for API responses (includes related objects)
 export const AppointmentSchema = AppointmentBaseSchema.extend({

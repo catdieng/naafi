@@ -8,6 +8,16 @@ import ShowAppointment from "@/components/Appointments/ShowAppointment";
 import PageHeader from "@/components/Common/PageHeader";
 
 export const Route = createFileRoute("/_layout/calendar")({
+	head: () => ({
+		title: "Calendar",
+		meta: [
+			{ title: "Calendar | Naafi" },
+			{
+				name: "description",
+				content: "Calendar page",
+			},
+		],
+	}),
 	component: RouteComponent,
 });
 

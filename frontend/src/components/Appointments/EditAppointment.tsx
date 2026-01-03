@@ -1,10 +1,10 @@
-import { DialogTitle } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import {
 	type ApiError,
+	type AppointmentFormValues,
 	AppointmentsService,
 	type AppointmentUpdate,
 	AppointmentUpdateSchema,
@@ -16,6 +16,7 @@ import {
 	DialogContent,
 	DialogHeader,
 	DialogRoot,
+	DialogTitle,
 } from "../ui/dialog";
 
 import { FormAppointment } from "./FormAppointment";
@@ -67,8 +68,11 @@ const EditAppointment = () => {
 		},
 	});
 
-	const onSubmit: SubmitHandler<AppointmentUpdate> = (data) => {
-		mutation.mutate(data);
+	const onSubmit: SubmitHandler<AppointmentFormValues> = (data) => {
+		mutation.mutate({
+			...(data as AppointmentUpdate),
+			vehicle_id: data.vehicle?.value,
+		});
 	};
 
 	return (

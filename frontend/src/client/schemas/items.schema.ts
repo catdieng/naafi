@@ -48,7 +48,7 @@ export const ItemSchema = ItemBaseSchema.extend({
 	applicable_taxes: z.array(TaxSchema).optional(),
 	custom_taxes_details: z.array(TaxSchema).optional(),
 	category: ItemCategorySchema.nullable().optional(),
-	category_id: z.string().nullable().optional(),
+	category_id: z.number().nullable().optional(),
 	owner: z.number().int().positive(),
 	created_at: z.string().datetime(),
 	updated_at: z.string().datetime(),

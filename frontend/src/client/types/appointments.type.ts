@@ -1,6 +1,7 @@
 import type { z } from "zod";
 import type {
 	AppointmentCreateSchema,
+	AppointmentFormSchema,
 	AppointmentSchema,
 	AppointmentUpdateSchema,
 } from "../schemas";
@@ -49,3 +50,15 @@ export type AppointmentsDeleteAppointmentData = {
 };
 
 export type AppointmentsDeleteAppointmentResponse = Message;
+
+export type AppointmentFormValues = z.infer<typeof AppointmentFormSchema>;
+
+export const APPOINTMENT_STATUSES = [
+	"todo",
+	"in_progress",
+	"waiting_parts",
+	"done",
+	"cancelled",
+];
+
+export type AppointmentStatus = (typeof APPOINTMENT_STATUSES)[number];

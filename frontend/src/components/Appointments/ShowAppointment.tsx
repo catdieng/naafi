@@ -1,8 +1,8 @@
 import {
 	Badge,
 	Box,
+	Card,
 	Container,
-	DialogFooter,
 	Flex,
 	Icon,
 	Separator,
@@ -10,16 +10,18 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import {
-	LuArrowRight,
-	LuBoxes,
-	LuCircleUserRound,
-	LuClock,
-	LuPencilLine,
-} from "react-icons/lu";
+	FaArrowRight,
+	FaBoxes,
+	FaCarAlt,
+	FaClock,
+	FaEdit,
+	FaUserAlt,
+} from "react-icons/fa";
 import { Button } from "../ui/button";
 import {
 	DialogCloseTrigger,
 	DialogContent,
+	DialogFooter,
 	DialogHeader,
 	DialogRoot,
 	DialogTitle,
@@ -78,13 +80,13 @@ const ShowAppointment = () => {
 
 				<Box>
 					<Container>
-						<Flex alignItems="center" gap={4}>
-							<Icon as={LuCircleUserRound} boxSize={6} color="gray.400" />
+						<Flex align="center" gap={4}>
+							<Icon as={FaUserAlt} boxSize={6} color="gray.400" />
 							<Box>
 								<Text fontWeight="bold" textStyle="sm" color="gray.400">
 									Customer
 								</Text>
-								<Text textStyle="sm">
+								<Text textStyle="sm" fontWeight="bold">
 									{selectedAppointment?.customer?.full_name || "—"}
 								</Text>
 							</Box>
@@ -92,12 +94,34 @@ const ShowAppointment = () => {
 					</Container>
 				</Box>
 
-				<Separator my={2} />
+				<Separator my={4} />
+
+				<Box>
+					<Container>
+						<Flex align="center" gap={4}>
+							<Icon as={FaCarAlt} boxSize={6} color="gray.400" />
+							<Box>
+								<Text fontWeight="bold" textStyle="sm" color="gray.400">
+									Vehicle
+								</Text>
+								<Text textStyle="sm" fontWeight="bold">
+									{selectedAppointment?.vehicle?.brand_name}{" "}
+									{selectedAppointment?.vehicle?.model_name}{" "}
+									{selectedAppointment?.vehicle?.year}{" "}
+									{selectedAppointment?.vehicle?.license_plate}{" "}
+									{selectedAppointment?.vehicle?.vin}
+								</Text>
+							</Box>
+						</Flex>
+					</Container>
+				</Box>
+
+				<Separator my={4} />
 
 				<Box width="100%">
 					<Container width="100%">
-						<Flex width="100%" gap={4}>
-							<Icon as={LuClock} boxSize={6} color="gray.400" />
+						<Flex width="100%" gap={4} align="center">
+							<Icon as={FaClock} boxSize={6} color="gray.400" />
 							<Flex width="100%" justify="space-between" alignItems="center">
 								<Box flex="2">
 									<Text fontWeight="bold" textStyle="sm" color="gray.400">
@@ -107,7 +131,7 @@ const ShowAppointment = () => {
 										{formatTime(selectedAppointment?.start)}
 									</Text>
 								</Box>
-								<Icon flex="1" as={LuArrowRight} boxSize={6} color="gray.400" />
+								<Icon flex="1" as={FaArrowRight} boxSize={6} color="gray.400" />
 								<Box flex="2">
 									<Text fontWeight="bold" textStyle="sm" color="gray.400">
 										{formatDate(selectedAppointment?.end)}
@@ -121,12 +145,12 @@ const ShowAppointment = () => {
 					</Container>
 				</Box>
 
-				<Separator my={2} />
+				<Separator my={4} />
 
 				<Box width="100%">
 					<Container width="100%">
-						<Flex width="100%" gap={4}>
-							<Icon as={LuBoxes} boxSize={6} color="gray.400" />
+						<Flex width="100%" gap={4} align="center">
+							<Icon as={FaBoxes} boxSize={6} color="gray.400" />
 							<Box width="100%">
 								<Text fontWeight="bold" textStyle="sm" color="gray.400">
 									Services
@@ -140,7 +164,7 @@ const ShowAppointment = () => {
 										))}
 									</Stack>
 								) : (
-									<Text color="gray.400" fontSize="sm">
+									<Text fontWeight="bold" fontSize="sm">
 										No services
 									</Text>
 								)}
@@ -149,25 +173,33 @@ const ShowAppointment = () => {
 					</Container>
 				</Box>
 
-				<Separator my={2} />
+				<Separator my={4} />
 
 				<Box width="100%">
 					<Container width="100%">
-						<Flex width="100%" gap={4}>
-							<Icon as={LuPencilLine} boxSize={6} color="gray.400" />
+						<Flex align="center" width="100%" gap={4}>
+							<Icon as={FaEdit} boxSize={6} color="gray.400" />
 							<Box width="100%">
 								<Text fontWeight="bold" textStyle="md" color="gray.400">
 									Description
 								</Text>
 								<Box>
-									<Text>{selectedAppointment?.description || "N/A"}</Text>
+									{/* <Card.Root variant="subtle">
+										<Card.Body>
+											<Card.Description>
+												<Text fontSize="smaller">
+													{selectedAppointment?.description || "N/A"}
+												</Text>
+											</Card.Description>
+										</Card.Body>
+									</Card.Root> */}
 								</Box>
 							</Box>
 						</Flex>
 					</Container>
 				</Box>
 
-				<Separator my={2} />
+				<Separator my={4} />
 
 				<DialogFooter flex={1} justifyContent="space-between">
 					{selectedAppointment?.id && (

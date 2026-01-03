@@ -1,9 +1,10 @@
 from django.db.models import Q
-from naafi.utils.pagination import CustomPageNumberPagination
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+
+from naafi.utils.pagination import CustomPageNumberPagination
 
 from .models import Customer
 from .serializers import CustomerSerializer

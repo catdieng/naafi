@@ -1,12 +1,4 @@
-import {
-	Box,
-	Container,
-	Flex,
-	Heading,
-	HStack,
-	Table,
-	Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, HStack, Table, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { type ColumnDef, flexRender } from "@tanstack/react-table";
 import { useState } from "react";
@@ -14,7 +6,6 @@ import type { TaxPublic } from "@/client";
 import { TaxesService } from "@/client/services/taxes.service";
 import { ActionsMenu } from "@/components/Common/ActionsMenu";
 import EmptyData from "@/components/Common/EmptyData";
-import PageHeader from "@/components/Common/PageHeader";
 import Paginator from "@/components/Common/Paginator";
 import SearchInput from "@/components/Common/SearchInput";
 import SortableHeader from "@/components/Common/SortableHeader";

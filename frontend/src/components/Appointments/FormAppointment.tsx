@@ -1,21 +1,21 @@
 import { Button, HStack, Input, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import {
-	type AppointmentCreate,
-	AppointmentCreateSchema,
+	AppointmentFormSchema,
+	type AppointmentFormValues,
 	type AppointmentPublic,
-	type AppointmentUpdate,
-	AppointmentUpdateSchema,
 } from "@/client";
 import { SelectCustomer } from "../Common/SelectCustomer";
 import { SelectService } from "../Common/SelectService";
+import SelectVehicle from "../Common/SelectVehicle";
 import { DialogBody, DialogFooter } from "../ui/dialog";
 import { Field } from "../ui/field";
 
 interface FormAppointmentProps {
 	defaultValues?: Partial<AppointmentPublic | null>;
-	onSubmit: SubmitHandler<AppointmentCreate | AppointmentUpdate>;
+	onSubmit: SubmitHandler<AppointmentFormValues>;
 	onCancel: () => void;
 	submitLabel?: string;
 	isSubmitting?: boolean;
@@ -30,25 +30,45 @@ export const FormAppointment = ({
 }: FormAppointmentProps) => {
 	const {
 		control,
-		register,
-		handleSubmit,
 		formState: { errors, isValid },
-	} = useForm<AppointmentCreate | AppointmentUpdate>({
+		handleSubmit,
+		register,
+		reset,
+		watch,
+	} = useForm<AppointmentFormValues>({
 		mode: "all",
 		criteriaMode: "all",
-		resolver: zodResolver(
-			defaultValues ? AppointmentUpdateSchema : AppointmentCreateSchema,
-		),
+		resolver: zodResolver(AppointmentFormSchema),
 		defaultValues: {
-			...defaultValues,
-			customer_id: defaultValues?.customer_id
-				? String(defaultValues.customer_id)
-				: null,
-			start: defaultValues?.start,
-			end: defaultValues?.end,
-			services_ids: defaultValues?.services?.map((e) => String(e.id)) ?? [],
+			start: "",
+			end: "",
+			customer_id: undefined,
+			vehicle: undefined,
+			services_ids: [],
+			description: "",
 		},
 	});
+
+	const watchedCustomerId = watch("customer_id");
+
+	const onClearCustomer = () => {
+		reset({ vehicle: null });
+	};
+
+	useEffect(() => {
+		if (!defaultValues) return;
+
+		reset({
+			start: defaultValues?.start,
+			end: defaultValues?.end,
+			customer_id: defaultValues.customer_id,
+			vehicle: {
+				label: `${defaultValues?.vehicle?.brand_name} ${defaultValues?.vehicle?.model_name} ${defaultValues?.vehicle?.license_plate}`,
+				value: defaultValues?.vehicle?.id,
+			},
+			services_ids: defaultValues.services?.map((e) => String(e.id)) ?? [],
+		});
+	}, [defaultValues, reset]);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -72,11 +92,22 @@ export const FormAppointment = ({
 					</Field>
 				</HStack>
 				<SelectCustomer
+					required
 					name="customer_id"
 					control={control}
 					label="Customer"
 					customer={defaultValues?.customer}
 					placeholder="Search and select customer"
+					onClear={onClearCustomer}
+				/>
+				<SelectVehicle
+					disabled={!watchedCustomerId}
+					customerId={watchedCustomerId!}
+					name="vehicle"
+					control={control}
+					label="Vehicle"
+					vehicle={defaultValues?.vehicle}
+					placeholder="Search and select vehicle"
 				/>
 				<SelectService
 					name="services_ids"

@@ -1,7 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Calendar } from "react-big-calendar";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
-import { type AppointmentPublic, AppointmentsService } from "@/client";
+import {
+	type ApiError,
+	type AppointmentPublic,
+	AppointmentsService,
+} from "@/client";
 import { useCalendarLocalizer } from "@/hooks/useCalendarLocalizer";
 import { useCalendarRanges } from "@/hooks/useCalendarRanges";
 import useCustomToast from "@/hooks/useCustomToast";
@@ -29,7 +33,9 @@ function getAppointments({ start, end }: { start: string; end: string }) {
 	};
 }
 
-export default function ListAppointments({ onSelectedEvent }) {
+export default function ListAppointments({
+	onSelectedEvent,
+}: ListAppointments) {
 	const localizer = useCalendarLocalizer();
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
@@ -55,7 +61,17 @@ export default function ListAppointments({ onSelectedEvent }) {
 		enabled: !!selectedRanges,
 	});
 
-	const mutation = useMutation({
+	const mutation = useMutation<
+		AppointmentPublic,
+		ApiError,
+		{
+			id: number;
+			data: {
+				start: string;
+				end: string;
+			};
+		}
+	>({
 		mutationFn: ({ id, data }) =>
 			AppointmentsService.updateAppointment({ id, requestBody: data }),
 		onSuccess: () => {

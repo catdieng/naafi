@@ -7,6 +7,15 @@ import type {
 	CustomerUpdateSchema,
 } from "../schemas";
 import type { Message } from "./commons.type";
+import type {
+	PaginatedRequestParams,
+	PaginatedResponse,
+} from "./pagination.type";
+import type {
+	VehicleCreate,
+	VehiclePublic,
+	VehicleUpdate,
+} from "./vehicules.type";
 
 export type CustomerPublic = z.infer<typeof CustomerSchema>;
 export type CustomerCreate = z.infer<typeof CustomerCreateSchema>;
@@ -63,3 +72,31 @@ export type CustomersSearchCustomerData = CustomerSearch;
 export type CustomersSearchCustomerResponse = {
 	results: Array<CustomerPublic>;
 };
+
+export type CustomersReadVehiclesData = PaginatedRequestParams & {
+	customer_pk: number;
+};
+
+export type CustomersReadVehiclesResponse = PaginatedResponse<VehiclePublic>;
+
+export type CustomersCreateVehicleData = {
+	customer_pk: number;
+	requestBody: VehicleCreate;
+};
+
+export type CustomersCreateVehicleResponse = VehiclePublic;
+
+export type CustomersUpdateVehicleData = {
+	customer_pk: number;
+	id: number;
+	requestBody: VehicleUpdate;
+};
+
+export type CustomersUpdateVehicleResponse = VehiclePublic;
+
+export type CustomersDeleteVehicleData = {
+	customer_pk: number;
+	id: number;
+};
+
+export type CustomersDeleteVehicleResponse = { message: string };

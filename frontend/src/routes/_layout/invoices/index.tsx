@@ -1,14 +1,7 @@
-import {
-	Container,
-	Flex,
-	Heading,
-	HStack,
-	Table,
-	Text,
-} from "@chakra-ui/react";
+import { Container, Flex, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { type ColumnDef, flexRender } from "@tanstack/react-table";
+import type { ColumnDef } from "@tanstack/react-table";
 import { useCallback } from "react";
 import {
 	type InvoicePublic,
@@ -16,16 +9,10 @@ import {
 	InvoicesService,
 } from "@/client";
 import { ActionsMenu } from "@/components/Common/ActionsMenu";
-import ColumnVisibilityControl from "@/components/Common/ColumnVisibilityControl";
-import EmptyData from "@/components/Common/EmptyData";
+import DrfList from "@/components/Common/DRFList";
 import PageHeader from "@/components/Common/PageHeader";
-import Paginator from "@/components/Common/Paginator";
-import SearchInput from "@/components/Common/SearchInput";
-import SortableHeader from "@/components/Common/SortableHeader";
 import AddInvoice from "@/components/Invoices/AddInvoice";
 import EditInvoice from "@/components/Invoices/EditInvoice";
-import Pending from "@/components/Pending/Pending";
-import { useDrfTable } from "@/hooks/useDrfTable";
 
 export const Route = createFileRoute("/_layout/invoices/")({
 	component: Invoices,
@@ -171,96 +158,21 @@ function InvoicesTable() {
 		},
 	];
 
-	const { table } = useDrfTable<InvoicePublic>({
-		data: data?.results || [],
-		columns,
-		totalCount: data?.count || 0,
-		initialColumnVisibility: {
-			id: true,
-			invoice_number: true,
-			total: true,
-			issue_date: true,
-			due_date: true,
-			customer: true,
-			created_at: false,
-			updated_at: false,
-		},
-		onSortingChange: (ordering) => {
-			setOrdering(ordering);
-		},
-	});
-
-	const items = data?.results ?? [];
-	const count = data?.count ?? 0;
-
-	if (isLoading) {
-		return (
-			<Pending columns={["ID", "Customer", "Amount", "Status", "Actions"]} />
-		);
-	}
-
-	if (items.length === 0 && !search?.length) {
-		return (
-			<EmptyData
-				action={<AddInvoice />}
-				title="You don't have any invoice yet"
-				description="Add a new invoice to get started"
-			/>
-		);
-	}
-
 	return (
-		<>
-			<Flex justifyContent="space-between" alignItems="end" mb={4}>
-				<Heading size="lg">
-					{search?.length ? "Found" : "All"} Invoices{" "}
-					<Text display="inline" color="grey">
-						({count})
-					</Text>
-				</Heading>
-				<HStack>
-					<SearchInput value={search} onSearch={setSearch} />
-					<ColumnVisibilityControl table={table} />
-				</HStack>
-			</Flex>
-			<Table.Root variant="outline" size={{ base: "md" }} rounded="sm">
-				<Table.Header>
-					{table.getHeaderGroups().map((headerGroup) => (
-						<Table.Row key={headerGroup.id}>
-							{headerGroup.headers.map((header) => (
-								<SortableHeader<InvoicePublic>
-									key={header.id}
-									header={header}
-									orderingKey={header.column.id}
-								/>
-							))}
-						</Table.Row>
-					))}
-				</Table.Header>
-				<Table.Body>
-					{table.getRowModel().rows.map((row) => (
-						<Table.Row key={row.id}>
-							{row.getVisibleCells().map((cell) => (
-								<Table.Cell key={cell.id}>
-									{flexRender(cell.column.columnDef.cell, cell.getContext())}
-								</Table.Cell>
-							))}
-						</Table.Row>
-					))}
-				</Table.Body>
-			</Table.Root>
-			<Paginator
-				count={count}
-				size={size}
-				page={page}
-				onPageSizeChange={(pageSize) => {
-					setSize(pageSize);
-				}}
-				onPageChange={(page) => {
-					setPage(page);
-				}}
-			/>
-		</>
+		<DrfList<InvoicePublic>
+			title="Invoices"
+			columns={columns}
+			data={data?.results ?? []}
+			totalCount={data?.count ?? 0}
+			page={page}
+			size={size}
+			search={search}
+			isLoading={isLoading}
+			onSearchChange={setSearch}
+			onPageChange={setPage}
+			onPageSizeChange={setSize}
+			onOrderingChange={setOrdering}
+		/>
 	);
 }
 

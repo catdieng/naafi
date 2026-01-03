@@ -1,20 +1,27 @@
-from rest_framework import serializers
-
 from naafi.customers.serializers import CustomerSerializer
 from naafi.services.models import Service
 from naafi.services.serializers import ServiceSerializer
+from naafi.vehicles.serializers import VehicleSerializer
+from rest_framework import serializers
 
 from .models import Appointment
 
 
 class AppointmentSerializer(serializers.ModelSerializer):
-    start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M")
-    end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M")
+    start = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", required=False)
+    end = serializers.DateTimeField(format="%Y-%m-%dT%H:%M", required=False)
     duration = serializers.SerializerMethodField()
     customer = CustomerSerializer(read_only=True)
     customer_id = serializers.PrimaryKeyRelatedField(
         queryset=Appointment.customer.field.related_model.objects.all(),
         source="customer",
+        required=False,
+        allow_null=True,
+    )
+    vehicle = VehicleSerializer(read_only=True)
+    vehicle_id = serializers.PrimaryKeyRelatedField(
+        queryset=Appointment.vehicle.field.related_model.objects.all(),
+        source="vehicle",
         required=False,
         allow_null=True,
     )
@@ -25,6 +32,9 @@ class AppointmentSerializer(serializers.ModelSerializer):
         required=False,
     )
     services = ServiceSerializer(many=True, read_only=True)
+    status = serializers.ChoiceField(
+        choices=Appointment._meta.get_field("status").choices, required=False
+    )
 
     class Meta:
         model = Appointment
@@ -32,8 +42,11 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "id",
             "customer",
             "customer_id",
+            "vehicle",
+            "vehicle_id",
             "start",
             "end",
+            "status",
             "description",
             "services",
             "services_ids",
@@ -83,9 +96,29 @@ class AppointmentSerializer(serializers.ModelSerializer):
         return None
 
     def validate(self, data):
-        start = data.get("start")
-        end = data.get("end")
+        is_create = self.instance is None
+
+        start = (
+            data.get("start")
+            if is_create
+            else data.get("start", getattr(self.instance, "start", None))
+        )
+        end = (
+            data.get("end")
+            if is_create
+            else data.get("end", getattr(self.instance, "end", None))
+        )
+
+        if is_create:
+            if not start or not end:
+                raise serializers.ValidationError({
+                    "start": "This field is required.",
+                    "end": "This field is required.",
+                })
+
         if start and end and end <= start:
-            raise serializers.ValidationError("End time must be after start time.")
+            raise serializers.ValidationError({
+                "end": "End time must be after start time."
+            })
 
         return data

@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SettingsService } from "@/client";
 import useCustomToast from "@/hooks/useCustomToast";
-import ItemImageSetting from "./ItemImageSetting";
+// import ItemImageSetting from "./ItemImageSetting";
 import ItemSetting from "./ItemSetting";
 import ItemStructuredSetting from "./ItemStructuredSetting";
 

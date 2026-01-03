@@ -1,5 +1,6 @@
 export * from "./appointments.type";
 export * from "./auth.type";
+export * from "./brands.type";
 export * from "./categories.type";
 export * from "./commons.type";
 export * from "./customers.type";
@@ -9,6 +10,8 @@ export * from "./invoice-items.type";
 export * from "./invoices.type";
 export * from "./items.type";
 export * from "./organizations.type";
+export * from "./pagination.type";
 export * from "./settings.type";
 export * from "./taxes.type";
 export * from "./users.type";
+export * from "./vehicules.type";

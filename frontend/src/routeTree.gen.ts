@@ -16,14 +16,19 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutUsersRouteImport } from './routes/_layout/users'
-import { Route as LayoutSettingsRouteImport } from './routes/_layout/settings'
+import { Route as LayoutSettingRouteImport } from './routes/_layout/setting'
 import { Route as LayoutProfileRouteImport } from './routes/_layout/profile'
 import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
 import { Route as LayoutExpensesRouteImport } from './routes/_layout/expenses'
 import { Route as LayoutCustomersRouteImport } from './routes/_layout/customers'
 import { Route as LayoutCategoriesRouteImport } from './routes/_layout/categories'
 import { Route as LayoutCalendarRouteImport } from './routes/_layout/calendar'
+import { Route as LayoutActivityRouteImport } from './routes/_layout/activity'
 import { Route as LayoutInvoicesIndexRouteImport } from './routes/_layout/invoices/index'
+import { Route as LayoutSettingsVehiclesBrandsRouteImport } from './routes/_layout/settings/vehicles-brands'
+import { Route as LayoutSettingsTaxesRouteImport } from './routes/_layout/settings/taxes'
+import { Route as LayoutSettingsOrganizationRouteImport } from './routes/_layout/settings/organization'
+import { Route as LayoutSettingsBillingRouteImport } from './routes/_layout/settings/billing'
 import { Route as LayoutInvoicesNewRouteImport } from './routes/_layout/invoices/new'
 import { Route as LayoutInvoicesInvoiceIdEditRouteImport } from './routes/_layout/invoices_/$invoiceId/edit'
 
@@ -61,9 +66,9 @@ const LayoutUsersRoute = LayoutUsersRouteImport.update({
   path: '/users',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutSettingsRoute = LayoutSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const LayoutSettingRoute = LayoutSettingRouteImport.update({
+  id: '/setting',
+  path: '/setting',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutProfileRoute = LayoutProfileRouteImport.update({
@@ -96,9 +101,36 @@ const LayoutCalendarRoute = LayoutCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => LayoutRoute,
 } as any)
+const LayoutActivityRoute = LayoutActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutInvoicesIndexRoute = LayoutInvoicesIndexRouteImport.update({
   id: '/invoices/',
   path: '/invoices/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutSettingsVehiclesBrandsRoute =
+  LayoutSettingsVehiclesBrandsRouteImport.update({
+    id: '/settings/vehicles-brands',
+    path: '/settings/vehicles-brands',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutSettingsTaxesRoute = LayoutSettingsTaxesRouteImport.update({
+  id: '/settings/taxes',
+  path: '/settings/taxes',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutSettingsOrganizationRoute =
+  LayoutSettingsOrganizationRouteImport.update({
+    id: '/settings/organization',
+    path: '/settings/organization',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+const LayoutSettingsBillingRoute = LayoutSettingsBillingRouteImport.update({
+  id: '/settings/billing',
+  path: '/settings/billing',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutInvoicesNewRoute = LayoutInvoicesNewRouteImport.update({
@@ -118,16 +150,21 @@ export interface FileRoutesByFullPath {
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/activity': typeof LayoutActivityRoute
   '/calendar': typeof LayoutCalendarRoute
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
   '/expenses': typeof LayoutExpensesRoute
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
-  '/settings': typeof LayoutSettingsRoute
+  '/setting': typeof LayoutSettingRoute
   '/users': typeof LayoutUsersRoute
   '/': typeof LayoutIndexRoute
   '/invoices/new': typeof LayoutInvoicesNewRoute
+  '/settings/billing': typeof LayoutSettingsBillingRoute
+  '/settings/organization': typeof LayoutSettingsOrganizationRoute
+  '/settings/taxes': typeof LayoutSettingsTaxesRoute
+  '/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
   '/invoices': typeof LayoutInvoicesIndexRoute
   '/invoices/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
 }
@@ -136,16 +173,21 @@ export interface FileRoutesByTo {
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/activity': typeof LayoutActivityRoute
   '/calendar': typeof LayoutCalendarRoute
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
   '/expenses': typeof LayoutExpensesRoute
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
-  '/settings': typeof LayoutSettingsRoute
+  '/setting': typeof LayoutSettingRoute
   '/users': typeof LayoutUsersRoute
   '/': typeof LayoutIndexRoute
   '/invoices/new': typeof LayoutInvoicesNewRoute
+  '/settings/billing': typeof LayoutSettingsBillingRoute
+  '/settings/organization': typeof LayoutSettingsOrganizationRoute
+  '/settings/taxes': typeof LayoutSettingsTaxesRoute
+  '/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
   '/invoices': typeof LayoutInvoicesIndexRoute
   '/invoices/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
 }
@@ -156,16 +198,21 @@ export interface FileRoutesById {
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
+  '/_layout/activity': typeof LayoutActivityRoute
   '/_layout/calendar': typeof LayoutCalendarRoute
   '/_layout/categories': typeof LayoutCategoriesRoute
   '/_layout/customers': typeof LayoutCustomersRoute
   '/_layout/expenses': typeof LayoutExpensesRoute
   '/_layout/items': typeof LayoutItemsRoute
   '/_layout/profile': typeof LayoutProfileRoute
-  '/_layout/settings': typeof LayoutSettingsRoute
+  '/_layout/setting': typeof LayoutSettingRoute
   '/_layout/users': typeof LayoutUsersRoute
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/invoices/new': typeof LayoutInvoicesNewRoute
+  '/_layout/settings/billing': typeof LayoutSettingsBillingRoute
+  '/_layout/settings/organization': typeof LayoutSettingsOrganizationRoute
+  '/_layout/settings/taxes': typeof LayoutSettingsTaxesRoute
+  '/_layout/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
   '/_layout/invoices/': typeof LayoutInvoicesIndexRoute
   '/_layout/invoices_/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
 }
@@ -176,16 +223,21 @@ export interface FileRouteTypes {
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/activity'
     | '/calendar'
     | '/categories'
     | '/customers'
     | '/expenses'
     | '/items'
     | '/profile'
-    | '/settings'
+    | '/setting'
     | '/users'
     | '/'
     | '/invoices/new'
+    | '/settings/billing'
+    | '/settings/organization'
+    | '/settings/taxes'
+    | '/settings/vehicles-brands'
     | '/invoices'
     | '/invoices/$invoiceId/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -194,16 +246,21 @@ export interface FileRouteTypes {
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/activity'
     | '/calendar'
     | '/categories'
     | '/customers'
     | '/expenses'
     | '/items'
     | '/profile'
-    | '/settings'
+    | '/setting'
     | '/users'
     | '/'
     | '/invoices/new'
+    | '/settings/billing'
+    | '/settings/organization'
+    | '/settings/taxes'
+    | '/settings/vehicles-brands'
     | '/invoices'
     | '/invoices/$invoiceId/edit'
   id:
@@ -213,16 +270,21 @@ export interface FileRouteTypes {
     | '/recover-password'
     | '/reset-password'
     | '/signup'
+    | '/_layout/activity'
     | '/_layout/calendar'
     | '/_layout/categories'
     | '/_layout/customers'
     | '/_layout/expenses'
     | '/_layout/items'
     | '/_layout/profile'
-    | '/_layout/settings'
+    | '/_layout/setting'
     | '/_layout/users'
     | '/_layout/'
     | '/_layout/invoices/new'
+    | '/_layout/settings/billing'
+    | '/_layout/settings/organization'
+    | '/_layout/settings/taxes'
+    | '/_layout/settings/vehicles-brands'
     | '/_layout/invoices/'
     | '/_layout/invoices_/$invoiceId/edit'
   fileRoutesById: FileRoutesById
@@ -286,11 +348,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutUsersRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/settings': {
-      id: '/_layout/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof LayoutSettingsRouteImport
+    '/_layout/setting': {
+      id: '/_layout/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof LayoutSettingRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/profile': {
@@ -335,11 +397,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutCalendarRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/activity': {
+      id: '/_layout/activity'
+      path: '/activity'
+      fullPath: '/activity'
+      preLoaderRoute: typeof LayoutActivityRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/invoices/': {
       id: '/_layout/invoices/'
       path: '/invoices'
       fullPath: '/invoices'
       preLoaderRoute: typeof LayoutInvoicesIndexRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/settings/vehicles-brands': {
+      id: '/_layout/settings/vehicles-brands'
+      path: '/settings/vehicles-brands'
+      fullPath: '/settings/vehicles-brands'
+      preLoaderRoute: typeof LayoutSettingsVehiclesBrandsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/settings/taxes': {
+      id: '/_layout/settings/taxes'
+      path: '/settings/taxes'
+      fullPath: '/settings/taxes'
+      preLoaderRoute: typeof LayoutSettingsTaxesRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/settings/organization': {
+      id: '/_layout/settings/organization'
+      path: '/settings/organization'
+      fullPath: '/settings/organization'
+      preLoaderRoute: typeof LayoutSettingsOrganizationRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/settings/billing': {
+      id: '/_layout/settings/billing'
+      path: '/settings/billing'
+      fullPath: '/settings/billing'
+      preLoaderRoute: typeof LayoutSettingsBillingRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/invoices/new': {
@@ -360,31 +457,41 @@ declare module '@tanstack/react-router' {
 }
 
 interface LayoutRouteChildren {
+  LayoutActivityRoute: typeof LayoutActivityRoute
   LayoutCalendarRoute: typeof LayoutCalendarRoute
   LayoutCategoriesRoute: typeof LayoutCategoriesRoute
   LayoutCustomersRoute: typeof LayoutCustomersRoute
   LayoutExpensesRoute: typeof LayoutExpensesRoute
   LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutProfileRoute: typeof LayoutProfileRoute
-  LayoutSettingsRoute: typeof LayoutSettingsRoute
+  LayoutSettingRoute: typeof LayoutSettingRoute
   LayoutUsersRoute: typeof LayoutUsersRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutInvoicesNewRoute: typeof LayoutInvoicesNewRoute
+  LayoutSettingsBillingRoute: typeof LayoutSettingsBillingRoute
+  LayoutSettingsOrganizationRoute: typeof LayoutSettingsOrganizationRoute
+  LayoutSettingsTaxesRoute: typeof LayoutSettingsTaxesRoute
+  LayoutSettingsVehiclesBrandsRoute: typeof LayoutSettingsVehiclesBrandsRoute
   LayoutInvoicesIndexRoute: typeof LayoutInvoicesIndexRoute
   LayoutInvoicesInvoiceIdEditRoute: typeof LayoutInvoicesInvoiceIdEditRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutActivityRoute: LayoutActivityRoute,
   LayoutCalendarRoute: LayoutCalendarRoute,
   LayoutCategoriesRoute: LayoutCategoriesRoute,
   LayoutCustomersRoute: LayoutCustomersRoute,
   LayoutExpensesRoute: LayoutExpensesRoute,
   LayoutItemsRoute: LayoutItemsRoute,
   LayoutProfileRoute: LayoutProfileRoute,
-  LayoutSettingsRoute: LayoutSettingsRoute,
+  LayoutSettingRoute: LayoutSettingRoute,
   LayoutUsersRoute: LayoutUsersRoute,
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutInvoicesNewRoute: LayoutInvoicesNewRoute,
+  LayoutSettingsBillingRoute: LayoutSettingsBillingRoute,
+  LayoutSettingsOrganizationRoute: LayoutSettingsOrganizationRoute,
+  LayoutSettingsTaxesRoute: LayoutSettingsTaxesRoute,
+  LayoutSettingsVehiclesBrandsRoute: LayoutSettingsVehiclesBrandsRoute,
   LayoutInvoicesIndexRoute: LayoutInvoicesIndexRoute,
   LayoutInvoicesInvoiceIdEditRoute: LayoutInvoicesInvoiceIdEditRoute,
 }
