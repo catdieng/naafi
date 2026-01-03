@@ -58,6 +58,7 @@ urlpatterns = [
     path("api/v1/invoices/", include("naafi.invoices.urls")),
     path("api/v1/appointments/", include("naafi.appointments.urls")),
     path("api/v1/settings/", include("naafi.settings.urls")),
+    path("api/v1/dashboard/", include("naafi.dashboard.urls")),
     # path("api/v1/", include("naafi.vehicles.urls")),
     path("api/v1/", include(router.urls)),
     path("api/v1/", include(customer_router.urls)),

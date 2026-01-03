@@ -43,6 +43,7 @@ class Common(Configuration):
         "naafi.appointments",
         "naafi.settings",
         "naafi.vehicles",
+        "naafi.dashboard",
     )
 
     INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS]
