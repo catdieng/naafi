@@ -58,14 +58,18 @@ export const FormAppointment = ({
 	useEffect(() => {
 		if (!defaultValues) return;
 
+		// check if defaultValues.vehicle is an object
+		const vehicle = defaultValues?.vehicle
+			? {
+					label: `${defaultValues?.vehicle?.brand_name} ${defaultValues?.vehicle?.model_name} ${defaultValues?.vehicle?.license_plate}`,
+					value: defaultValues?.vehicle?.id,
+				}
+			: null;
 		reset({
 			start: defaultValues?.start,
 			end: defaultValues?.end,
 			customer_id: defaultValues.customer_id,
-			vehicle: {
-				label: `${defaultValues?.vehicle?.brand_name} ${defaultValues?.vehicle?.model_name} ${defaultValues?.vehicle?.license_plate}`,
-				value: defaultValues?.vehicle?.id,
-			},
+			vehicle: vehicle,
 			services_ids: defaultValues.services?.map((e) => String(e.id)) ?? [],
 		});
 	}, [defaultValues, reset]);

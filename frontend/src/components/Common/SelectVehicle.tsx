@@ -41,6 +41,7 @@ const SelectVehicle = ({
 
 	const onVehiclePropChanged = useEffectEvent(() => {
 		if (vehicle) {
+			console.log("vehicle", vehicle);
 			setVehiculeList([
 				{
 					label: `${vehicle.brand_name} ${vehicle.model_name} ${vehicle.license_plate}`,
