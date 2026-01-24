@@ -32,10 +32,10 @@ function getUsersQueryOptions({
 	return {
 		queryFn: () => UsersService.readUsers({ ordering, page, size, search }),
 		queryKey: ["users", { ordering, page, size, search }],
-	};
+	}
 }
 
-export const Route = createFileRoute("/_layout/users")({
+export const Route = createFileRoute("/_layout/settings/users")({
 	head: () => ({
 		title: "Users",
 		meta: [
@@ -68,7 +68,7 @@ function Users() {
 				}),
 			}),
 		[navigate],
-	);
+	)
 
 	const setPage = useCallback(
 		(page: number) =>
@@ -76,7 +76,7 @@ function Users() {
 				search: (prev: { [key: string]: string }) => ({ ...prev, page }),
 			}),
 		[navigate],
-	);
+	)
 
 	const setSize = useCallback(
 		(size: number) =>
@@ -88,7 +88,7 @@ function Users() {
 				}),
 			}),
 		[navigate],
-	);
+	)
 
 	const setSearch = useCallback(
 		(search: string) =>
@@ -100,12 +100,12 @@ function Users() {
 				}),
 			}),
 		[navigate],
-	);
+	)
 
 	const { data, isLoading } = useQuery({
 		...getUsersQueryOptions({ ordering, page, search, size }),
 		placeholderData: (prevData) => prevData,
-	});
+	})
 
 	const columns: ColumnDef<UserPublic>[] = [
 		{
@@ -164,7 +164,7 @@ function Users() {
 			enableColumnFilter: false,
 			size: 120,
 		},
-	];
+	]
 
 	const columnVisibility: VisibilityState = {
 		id: true,
@@ -174,7 +174,7 @@ function Users() {
 		address: false,
 		created_at: false,
 		updated_at: false,
-	};
+	}
 
 	return (
 		<Container maxW="full">
@@ -201,5 +201,5 @@ function Users() {
 				onOrderingChange={setOrdering}
 			/>
 		</Container>
-	);
+	)
 }

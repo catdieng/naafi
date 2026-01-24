@@ -1,4 +1,4 @@
-import { Container, Flex, Link, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Link, Separator, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import type { ColumnDef, VisibilityState } from "@tanstack/react-table";
@@ -210,50 +210,50 @@ function customers() {
 	};
 
 	return (
-		<Container maxW="full">
-			<Flex justifyContent="space-between" alignItems="center" mb={4}>
-				<PageHeader
-					title="Customer management"
-					description="Manage your customers and their details"
-				/>
+		<Box h="100vh" display="flex" flexDirection="column">
+			<Flex justifyContent="space-between" alignItems="center" px={8} pt={2}>
+				<PageHeader title="Customers" />
 				<AddCustomer />
 			</Flex>
-			<DrfList
-				title="Customer"
-				columns={columns}
-				initialColumnVisibility={columnVisibility}
-				data={data?.results ?? []}
-				totalCount={data?.count ?? 0}
-				page={page}
-				size={size}
-				search={search}
-				isLoading={isLoading}
-				onSearchChange={setSearch}
-				onPageChange={setPage}
-				onPageSizeChange={setSize}
-				onOrderingChange={setOrdering}
-			/>
-			{editedCustomer && (
-				<EditCustomer
-					customer={editedCustomer}
-					open
-					onClose={() => setEditedCustomer(null)}
+			<Separator mt={2} mb={8} />
+			<Container maxW="full">
+				<DrfList
+					title="Customer"
+					columns={columns}
+					initialColumnVisibility={columnVisibility}
+					data={data?.results ?? []}
+					totalCount={data?.count ?? 0}
+					page={page}
+					size={size}
+					search={search}
+					isLoading={isLoading}
+					onSearchChange={setSearch}
+					onPageChange={setPage}
+					onPageSizeChange={setSize}
+					onOrderingChange={setOrdering}
 				/>
-			)}
-			{managedCustomer && (
-				<ManageCustomerVehicles
-					customer={managedCustomer}
-					open
-					onClose={() => setManagedCustomer(null)}
-				/>
-			)}
-			{deletedCustomer && (
-				<DeleteCustomer
-					id={deletedCustomer}
-					open
-					onClose={() => setDeletedCustomer(null)}
-				/>
-			)}
-		</Container>
+				{editedCustomer && (
+					<EditCustomer
+						customer={editedCustomer}
+						open
+						onClose={() => setEditedCustomer(null)}
+					/>
+				)}
+				{managedCustomer && (
+					<ManageCustomerVehicles
+						customer={managedCustomer}
+						open
+						onClose={() => setManagedCustomer(null)}
+					/>
+				)}
+				{deletedCustomer && (
+					<DeleteCustomer
+						id={deletedCustomer}
+						open
+						onClose={() => setDeletedCustomer(null)}
+					/>
+				)}
+			</Container>
+		</Box>
 	);
 }

@@ -15,7 +15,6 @@ import { Route as RecoverPasswordRouteImport } from './routes/recover-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
 import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
-import { Route as LayoutUsersRouteImport } from './routes/_layout/users'
 import { Route as LayoutSettingRouteImport } from './routes/_layout/setting'
 import { Route as LayoutProfileRouteImport } from './routes/_layout/profile'
 import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
@@ -26,6 +25,7 @@ import { Route as LayoutCalendarRouteImport } from './routes/_layout/calendar'
 import { Route as LayoutActivityRouteImport } from './routes/_layout/activity'
 import { Route as LayoutInvoicesIndexRouteImport } from './routes/_layout/invoices/index'
 import { Route as LayoutSettingsVehiclesBrandsRouteImport } from './routes/_layout/settings/vehicles-brands'
+import { Route as LayoutSettingsUsersRouteImport } from './routes/_layout/settings/users'
 import { Route as LayoutSettingsTaxesRouteImport } from './routes/_layout/settings/taxes'
 import { Route as LayoutSettingsOrganizationRouteImport } from './routes/_layout/settings/organization'
 import { Route as LayoutSettingsBillingRouteImport } from './routes/_layout/settings/billing'
@@ -59,11 +59,6 @@ const LayoutRoute = LayoutRouteImport.update({
 const LayoutIndexRoute = LayoutIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutRoute,
-} as any)
-const LayoutUsersRoute = LayoutUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutSettingRoute = LayoutSettingRouteImport.update({
@@ -117,6 +112,11 @@ const LayoutSettingsVehiclesBrandsRoute =
     path: '/settings/vehicles-brands',
     getParentRoute: () => LayoutRoute,
   } as any)
+const LayoutSettingsUsersRoute = LayoutSettingsUsersRouteImport.update({
+  id: '/settings/users',
+  path: '/settings/users',
+  getParentRoute: () => LayoutRoute,
+} as any)
 const LayoutSettingsTaxesRoute = LayoutSettingsTaxesRouteImport.update({
   id: '/settings/taxes',
   path: '/settings/taxes',
@@ -158,12 +158,12 @@ export interface FileRoutesByFullPath {
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
-  '/users': typeof LayoutUsersRoute
   '/': typeof LayoutIndexRoute
   '/invoices/new': typeof LayoutInvoicesNewRoute
   '/settings/billing': typeof LayoutSettingsBillingRoute
   '/settings/organization': typeof LayoutSettingsOrganizationRoute
   '/settings/taxes': typeof LayoutSettingsTaxesRoute
+  '/settings/users': typeof LayoutSettingsUsersRoute
   '/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
   '/invoices': typeof LayoutInvoicesIndexRoute
   '/invoices/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
@@ -181,12 +181,12 @@ export interface FileRoutesByTo {
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
-  '/users': typeof LayoutUsersRoute
   '/': typeof LayoutIndexRoute
   '/invoices/new': typeof LayoutInvoicesNewRoute
   '/settings/billing': typeof LayoutSettingsBillingRoute
   '/settings/organization': typeof LayoutSettingsOrganizationRoute
   '/settings/taxes': typeof LayoutSettingsTaxesRoute
+  '/settings/users': typeof LayoutSettingsUsersRoute
   '/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
   '/invoices': typeof LayoutInvoicesIndexRoute
   '/invoices/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
@@ -206,12 +206,12 @@ export interface FileRoutesById {
   '/_layout/items': typeof LayoutItemsRoute
   '/_layout/profile': typeof LayoutProfileRoute
   '/_layout/setting': typeof LayoutSettingRoute
-  '/_layout/users': typeof LayoutUsersRoute
   '/_layout/': typeof LayoutIndexRoute
   '/_layout/invoices/new': typeof LayoutInvoicesNewRoute
   '/_layout/settings/billing': typeof LayoutSettingsBillingRoute
   '/_layout/settings/organization': typeof LayoutSettingsOrganizationRoute
   '/_layout/settings/taxes': typeof LayoutSettingsTaxesRoute
+  '/_layout/settings/users': typeof LayoutSettingsUsersRoute
   '/_layout/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
   '/_layout/invoices/': typeof LayoutInvoicesIndexRoute
   '/_layout/invoices_/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
@@ -231,12 +231,12 @@ export interface FileRouteTypes {
     | '/items'
     | '/profile'
     | '/setting'
-    | '/users'
     | '/'
     | '/invoices/new'
     | '/settings/billing'
     | '/settings/organization'
     | '/settings/taxes'
+    | '/settings/users'
     | '/settings/vehicles-brands'
     | '/invoices'
     | '/invoices/$invoiceId/edit'
@@ -254,12 +254,12 @@ export interface FileRouteTypes {
     | '/items'
     | '/profile'
     | '/setting'
-    | '/users'
     | '/'
     | '/invoices/new'
     | '/settings/billing'
     | '/settings/organization'
     | '/settings/taxes'
+    | '/settings/users'
     | '/settings/vehicles-brands'
     | '/invoices'
     | '/invoices/$invoiceId/edit'
@@ -278,12 +278,12 @@ export interface FileRouteTypes {
     | '/_layout/items'
     | '/_layout/profile'
     | '/_layout/setting'
-    | '/_layout/users'
     | '/_layout/'
     | '/_layout/invoices/new'
     | '/_layout/settings/billing'
     | '/_layout/settings/organization'
     | '/_layout/settings/taxes'
+    | '/_layout/settings/users'
     | '/_layout/settings/vehicles-brands'
     | '/_layout/invoices/'
     | '/_layout/invoices_/$invoiceId/edit'
@@ -339,13 +339,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof LayoutIndexRouteImport
-      parentRoute: typeof LayoutRoute
-    }
-    '/_layout/users': {
-      id: '/_layout/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof LayoutUsersRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/setting': {
@@ -418,6 +411,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutSettingsVehiclesBrandsRouteImport
       parentRoute: typeof LayoutRoute
     }
+    '/_layout/settings/users': {
+      id: '/_layout/settings/users'
+      path: '/settings/users'
+      fullPath: '/settings/users'
+      preLoaderRoute: typeof LayoutSettingsUsersRouteImport
+      parentRoute: typeof LayoutRoute
+    }
     '/_layout/settings/taxes': {
       id: '/_layout/settings/taxes'
       path: '/settings/taxes'
@@ -465,12 +465,12 @@ interface LayoutRouteChildren {
   LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutProfileRoute: typeof LayoutProfileRoute
   LayoutSettingRoute: typeof LayoutSettingRoute
-  LayoutUsersRoute: typeof LayoutUsersRoute
   LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutInvoicesNewRoute: typeof LayoutInvoicesNewRoute
   LayoutSettingsBillingRoute: typeof LayoutSettingsBillingRoute
   LayoutSettingsOrganizationRoute: typeof LayoutSettingsOrganizationRoute
   LayoutSettingsTaxesRoute: typeof LayoutSettingsTaxesRoute
+  LayoutSettingsUsersRoute: typeof LayoutSettingsUsersRoute
   LayoutSettingsVehiclesBrandsRoute: typeof LayoutSettingsVehiclesBrandsRoute
   LayoutInvoicesIndexRoute: typeof LayoutInvoicesIndexRoute
   LayoutInvoicesInvoiceIdEditRoute: typeof LayoutInvoicesInvoiceIdEditRoute
@@ -485,12 +485,12 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutItemsRoute: LayoutItemsRoute,
   LayoutProfileRoute: LayoutProfileRoute,
   LayoutSettingRoute: LayoutSettingRoute,
-  LayoutUsersRoute: LayoutUsersRoute,
   LayoutIndexRoute: LayoutIndexRoute,
   LayoutInvoicesNewRoute: LayoutInvoicesNewRoute,
   LayoutSettingsBillingRoute: LayoutSettingsBillingRoute,
   LayoutSettingsOrganizationRoute: LayoutSettingsOrganizationRoute,
   LayoutSettingsTaxesRoute: LayoutSettingsTaxesRoute,
+  LayoutSettingsUsersRoute: LayoutSettingsUsersRoute,
   LayoutSettingsVehiclesBrandsRoute: LayoutSettingsVehiclesBrandsRoute,
   LayoutInvoicesIndexRoute: LayoutInvoicesIndexRoute,
   LayoutInvoicesInvoiceIdEditRoute: LayoutInvoicesInvoiceIdEditRoute,

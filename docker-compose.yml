@@ -47,12 +47,10 @@ services:
     build:
       context: ./backend
     networks:
-      - traefik-public
       - default
     depends_on:
       db:
         condition: service_healthy
-        restart: true
     command: bash scripts/prestart.sh
     env_file:
       - .env

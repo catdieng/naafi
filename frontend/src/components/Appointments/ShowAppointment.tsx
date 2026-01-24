@@ -1,7 +1,7 @@
 import {
 	Badge,
 	Box,
-	Card,
+	// Card,
 	Container,
 	Flex,
 	Icon,

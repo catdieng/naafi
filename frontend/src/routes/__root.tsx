@@ -11,7 +11,7 @@ const loadDevtools = () =>
 		return {
 			default: () => (
 				<>
-					<routerDevtools.TanStackRouterDevtools />
+					<routerDevtools.TanStackRouterDevtools position="bottom-right" />
 					<reactQueryDevtools.ReactQueryDevtools />
 				</>
 			),

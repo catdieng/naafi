@@ -118,7 +118,7 @@ const AddExpense = () => {
 			}}
 		>
 			<DialogTrigger asChild>
-				<Button value="add-expense" size="sm">
+				<Button value="add-expense" size="xs">
 					<FaPlus fontSize="16px" />
 					Add Expense
 				</Button>

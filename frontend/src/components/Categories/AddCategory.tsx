@@ -111,7 +111,7 @@ const AddCategory = () => {
 			onOpenChange={({ open }) => setIsOpen(open)}
 		>
 			<DialogTrigger asChild>
-				<Button value="add-item" size="sm">
+				<Button value="add-item" size="xs">
 					<HiPlus fontSize="16px" />
 					Add Category
 				</Button>

@@ -46,7 +46,6 @@ const AddVehicule = ({
 	const {
 		control,
 		formState: { errors, isValid, isSubmitting },
-		getValues,
 		handleSubmit,
 		register,
 		reset,

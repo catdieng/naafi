@@ -89,7 +89,7 @@ const AddCustomer = ({
 		>
 			<DialogTrigger asChild>
 				{appearance === "button" ? (
-					<Button value="add-customer" size="sm">
+					<Button value="add-customer" size="xs">
 						<FaPlus fontSize="16px" />
 						Add Customer
 					</Button>

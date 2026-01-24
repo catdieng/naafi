@@ -1,4 +1,4 @@
-import { Container, Flex } from "@chakra-ui/react";
+import { Box, Container, Flex, Separator } from "@chakra-ui/react";
 import { createFileRoute } from "@tanstack/react-router";
 import AddAppointment from "@/components/Appointments/AddAppointment";
 import EditAppointment from "@/components/Appointments/EditAppointment";
@@ -23,20 +23,20 @@ export const Route = createFileRoute("/_layout/calendar")({
 
 function RouteComponent() {
 	return (
-		<Container maxW="full" h="100vh" display="flex" flexDirection="column">
+		<Box h="100vh" display="flex" flexDirection="column">
 			<AppointmentProvider>
-				<Flex justifyContent="space-between" alignItems="center" mb={4}>
-					<PageHeader
-						title="Calendar"
-						description="Manages your business schedules"
-					/>
+				<Flex justifyContent="space-between" alignItems="center" px={8} pt={2}>
+					<PageHeader title="Calendar" />
 					<AddAppointment />
 				</Flex>
-
-				<ListAppointments />
-				<EditAppointment />
+				<Separator mt={2} mb={8} />
+				<Container maxW="full" h="100vh" display="flex" flexDirection="column">
+					<ListAppointments />
+					<EditAppointment />
+					<ShowAppointment />
+				</Container>
 				<ShowAppointment />
 			</AppointmentProvider>
-		</Container>
+		</Box>
 	);
 }

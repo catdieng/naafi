@@ -11,7 +11,7 @@ export interface SelectCustomerProps {
 	name: string;
 	control: Control<any>;
 	label?: string;
-	customer?: CustomerPublic | null;
+	customer?: { id: number; full_name: string } | CustomerPublic | null;
 	placeholder?: string;
 	onClear?: () => void;
 }

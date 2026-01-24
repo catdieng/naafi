@@ -1,4 +1,4 @@
-import { Container, Flex, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Separator, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -15,6 +15,16 @@ import AddInvoice from "@/components/Invoices/AddInvoice";
 import EditInvoice from "@/components/Invoices/EditInvoice";
 
 export const Route = createFileRoute("/_layout/invoices/")({
+	head: () => ({
+		title: "Invoices",
+		meta: [
+			{ title: "Invoices | Naafi" },
+			{
+				name: "description",
+				content: "Invoices page",
+			},
+		],
+	}),
 	component: Invoices,
 	validateSearch: (search) => InvoiceSearchSchema.parse(search),
 });
@@ -178,15 +188,16 @@ function InvoicesTable() {
 
 function Invoices() {
 	return (
-		<Container maxW="full">
-			<Flex justifyContent="space-between" alignItems="center" mb={4}>
-				<PageHeader
-					title="Invoice management"
-					description="Manage your invoices and their details"
-				/>
+		<Box h="100vh" display="flex" flexDirection="column">
+			<Flex justifyContent="space-between" alignItems="center" px={8} pt={2}>
+				<PageHeader title="Invoices" />
 				<AddInvoice />
 			</Flex>
-			<InvoicesTable />
-		</Container>
+			<Separator mt={2} mb={8} />
+
+			<Container maxW="full">
+				<InvoicesTable />
+			</Container>
+		</Box>
 	);
 }

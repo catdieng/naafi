@@ -121,7 +121,7 @@ const AddItem = ({ appearance = "button", onItemCreated }: AddItemProps) => {
 		>
 			<DialogTrigger asChild>
 				{appearance === "button" ? (
-					<Button value="add-item" size="sm">
+					<Button value="add-item" size="xs">
 						<FaPlus fontSize="16px" />
 						Add Item
 					</Button>

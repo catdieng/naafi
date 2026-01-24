@@ -74,7 +74,7 @@ const AddAppointment = () => {
 			}}
 		>
 			<DialogTrigger asChild>
-				<Button value="add-appointment" size="sm">
+				<Button value="add-appointment" size="xs">
 					<FaPlus fontSize="16px" />
 					Add Appointment
 				</Button>

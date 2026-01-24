@@ -1,4 +1,4 @@
-import { Container, Flex, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Separator, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -13,6 +13,18 @@ import DeleteItem from "@/components/Items/DeleteItem";
 import EditItem from "@/components/Items/EditItem";
 
 export const Route = createFileRoute("/_layout/items")({
+	head: () => ({
+		title: "Items",
+		meta: [
+			{
+				title: "Items | Naafi",
+			},
+			{
+				name: "description",
+				description: "List of items",
+			},
+		],
+	}),
 	component: Items,
 	validateSearch: (search) => ItemsSearchSchema.parse(search),
 });
@@ -148,28 +160,28 @@ function Items() {
 	];
 
 	return (
-		<Container maxW="full">
-			<Flex justifyContent="space-between" alignItems="center" mb={4}>
-				<PageHeader
-					title="Item management"
-					description="Manage your items and their details"
-				/>
+		<Box h="100vh" display="flex" flexDirection="column">
+			<Flex justifyContent="space-between" alignItems="center" px={8} pt={2}>
+				<PageHeader title="Items" />
 				<AddItem />
 			</Flex>
-			<DrfList
-				title="Items"
-				columns={columns}
-				data={data?.results ?? []}
-				totalCount={data?.count ?? 0}
-				page={page}
-				size={size}
-				search={search}
-				isLoading={isLoading}
-				onSearchChange={setSearch}
-				onPageChange={setPage}
-				onPageSizeChange={setSize}
-				onOrderingChange={setOrdering}
-			/>
-		</Container>
+			<Separator mt={2} mb={8} />
+			<Container maxW="full">
+				<DrfList
+					title="Items"
+					columns={columns}
+					data={data?.results ?? []}
+					totalCount={data?.count ?? 0}
+					page={page}
+					size={size}
+					search={search}
+					isLoading={isLoading}
+					onSearchChange={setSearch}
+					onPageChange={setPage}
+					onPageSizeChange={setSize}
+					onOrderingChange={setOrdering}
+				/>
+			</Container>
+		</Box>
 	);
 }

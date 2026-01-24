@@ -128,7 +128,7 @@ export default function ListAppointments({
 			onSelectEvent={onSelectEvent}
 			onSelectSlot={onSelectedSlot}
 			components={{ event: EventAppointment }}
-			style={{ height: "calc(100vh - 190px)", width: "100%" }}
+			style={{ height: "calc(100vh - 110px)", width: "100%" }}
 		/>
 	);
 }
