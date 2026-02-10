@@ -18,6 +18,7 @@ import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
 import { Route as LayoutSettingRouteImport } from './routes/_layout/setting'
 import { Route as LayoutProfileRouteImport } from './routes/_layout/profile'
 import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
+import { Route as LayoutHomeRouteImport } from './routes/_layout/home'
 import { Route as LayoutExpensesRouteImport } from './routes/_layout/expenses'
 import { Route as LayoutCustomersRouteImport } from './routes/_layout/customers'
 import { Route as LayoutCategoriesRouteImport } from './routes/_layout/categories'
@@ -74,6 +75,11 @@ const LayoutProfileRoute = LayoutProfileRouteImport.update({
 const LayoutItemsRoute = LayoutItemsRouteImport.update({
   id: '/items',
   path: '/items',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutHomeRoute = LayoutHomeRouteImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutExpensesRoute = LayoutExpensesRouteImport.update({
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
   '/expenses': typeof LayoutExpensesRoute
+  '/home': typeof LayoutHomeRoute
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
@@ -178,6 +185,7 @@ export interface FileRoutesByTo {
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
   '/expenses': typeof LayoutExpensesRoute
+  '/home': typeof LayoutHomeRoute
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   '/_layout/categories': typeof LayoutCategoriesRoute
   '/_layout/customers': typeof LayoutCustomersRoute
   '/_layout/expenses': typeof LayoutExpensesRoute
+  '/_layout/home': typeof LayoutHomeRoute
   '/_layout/items': typeof LayoutItemsRoute
   '/_layout/profile': typeof LayoutProfileRoute
   '/_layout/setting': typeof LayoutSettingRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/customers'
     | '/expenses'
+    | '/home'
     | '/items'
     | '/profile'
     | '/setting'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/categories'
     | '/customers'
     | '/expenses'
+    | '/home'
     | '/items'
     | '/profile'
     | '/setting'
@@ -275,6 +286,7 @@ export interface FileRouteTypes {
     | '/_layout/categories'
     | '/_layout/customers'
     | '/_layout/expenses'
+    | '/_layout/home'
     | '/_layout/items'
     | '/_layout/profile'
     | '/_layout/setting'
@@ -360,6 +372,13 @@ declare module '@tanstack/react-router' {
       path: '/items'
       fullPath: '/items'
       preLoaderRoute: typeof LayoutItemsRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/home': {
+      id: '/_layout/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof LayoutHomeRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/expenses': {
@@ -462,6 +481,7 @@ interface LayoutRouteChildren {
   LayoutCategoriesRoute: typeof LayoutCategoriesRoute
   LayoutCustomersRoute: typeof LayoutCustomersRoute
   LayoutExpensesRoute: typeof LayoutExpensesRoute
+  LayoutHomeRoute: typeof LayoutHomeRoute
   LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutProfileRoute: typeof LayoutProfileRoute
   LayoutSettingRoute: typeof LayoutSettingRoute
@@ -482,6 +502,7 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutCategoriesRoute: LayoutCategoriesRoute,
   LayoutCustomersRoute: LayoutCustomersRoute,
   LayoutExpensesRoute: LayoutExpensesRoute,
+  LayoutHomeRoute: LayoutHomeRoute,
   LayoutItemsRoute: LayoutItemsRoute,
   LayoutProfileRoute: LayoutProfileRoute,
   LayoutSettingRoute: LayoutSettingRoute,
