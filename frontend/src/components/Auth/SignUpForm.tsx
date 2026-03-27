@@ -1,6 +1,5 @@
-import { Container, Flex, Image, Input, Text } from "@chakra-ui/react";
+import { Container, Flex, Icon, Image, Input, Text } from "@chakra-ui/react";
 import { Link as RouterLink } from "@tanstack/react-router";
-import { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { FiLock, FiUser } from "react-icons/fi";
 
@@ -35,9 +34,6 @@ export default function SignUpPage() {
 		},
 	});
 
-	const emailId = useId();
-	const fullNameId = useId();
-
 	const onSubmit: SubmitHandler<UserRegisterForm> = (data) => {
 		signUpMutation.mutate(data);
 	};
@@ -62,10 +58,13 @@ export default function SignUpPage() {
 					alignSelf="center"
 					mb={4}
 				/>
-				<Field invalid={!!errors.full_name} errorText={errors.full_name?.message}>
-					<InputGroup w="100%" startElement={<FiUser />}>
+				<Field
+					invalid={!!errors.full_name}
+					errorText={errors.full_name?.message}
+				>
+					<InputGroup w="100%" startElement={<Icon as={FiUser} />}>
 						<Input
-							id={fullNameId}
+							id="signup-full-name"
 							minLength={3}
 							{...register("full_name", {
 								required: "Full Name is required",
@@ -77,9 +76,9 @@ export default function SignUpPage() {
 				</Field>
 
 				<Field invalid={!!errors.email} errorText={errors.email?.message}>
-					<InputGroup w="100%" startElement={<FiUser />}>
+					<InputGroup w="100%" startElement={<Icon as={FiUser} />}>
 						<Input
-							id={emailId}
+							id="signup-email"
 							{...register("email", {
 								required: "Email is required",
 								pattern: emailPattern,
@@ -91,14 +90,16 @@ export default function SignUpPage() {
 				</Field>
 				<PasswordInput
 					type="password"
-					startElement={<FiLock />}
+					id="signup-password"
+					startElement={<Icon as={FiLock} />}
 					{...register("password", passwordRules())}
 					placeholder="Password"
 					errors={errors}
 				/>
 				<PasswordInput
 					type="confirm_password"
-					startElement={<FiLock />}
+					id="signup-confirm-password"
+					startElement={<Icon as={FiLock} />}
 					{...register("confirm_password", confirmPasswordRules(getValues))}
 					placeholder="Confirm Password"
 					errors={errors}

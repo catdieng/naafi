@@ -1,10 +1,10 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 
-import SignUpPage from "@/components/Auth/SignUpPage";
+import SignUpForm from "@/components/Auth/SignUpForm";
 import { isLoggedIn } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/signup")({
-	component: SignUpPage,
+	component: SignUpForm,
 	beforeLoad: async () => {
 		if (isLoggedIn()) {
 			throw redirect({
