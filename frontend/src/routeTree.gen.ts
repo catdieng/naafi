@@ -152,6 +152,7 @@ const LayoutInvoicesInvoiceIdEditRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof LayoutIndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -165,14 +166,13 @@ export interface FileRoutesByFullPath {
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
-  '/': typeof LayoutIndexRoute
   '/invoices/new': typeof LayoutInvoicesNewRoute
   '/settings/billing': typeof LayoutSettingsBillingRoute
   '/settings/organization': typeof LayoutSettingsOrganizationRoute
   '/settings/taxes': typeof LayoutSettingsTaxesRoute
   '/settings/users': typeof LayoutSettingsUsersRoute
   '/settings/vehicles-brands': typeof LayoutSettingsVehiclesBrandsRoute
-  '/invoices': typeof LayoutInvoicesIndexRoute
+  '/invoices/': typeof LayoutInvoicesIndexRoute
   '/invoices/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -228,6 +228,7 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
@@ -241,14 +242,13 @@ export interface FileRouteTypes {
     | '/items'
     | '/profile'
     | '/setting'
-    | '/'
     | '/invoices/new'
     | '/settings/billing'
     | '/settings/organization'
     | '/settings/taxes'
     | '/settings/users'
     | '/settings/vehicles-brands'
-    | '/invoices'
+    | '/invoices/'
     | '/invoices/$invoiceId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -342,7 +342,7 @@ declare module '@tanstack/react-router' {
     '/_layout': {
       id: '/_layout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -419,7 +419,7 @@ declare module '@tanstack/react-router' {
     '/_layout/invoices/': {
       id: '/_layout/invoices/'
       path: '/invoices'
-      fullPath: '/invoices'
+      fullPath: '/invoices/'
       preLoaderRoute: typeof LayoutInvoicesIndexRouteImport
       parentRoute: typeof LayoutRoute
     }

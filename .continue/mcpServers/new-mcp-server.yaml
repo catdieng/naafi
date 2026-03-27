@@ -1,0 +1,10 @@
+name: New MCP server
+version: 0.0.1
+schema: v1
+mcpServers:
+- name: Chakra UI V3 MCP Server
+  command: npx
+  args:
+  - -y
+  - '@chakra-ui/react-mcp'
+  env: {}

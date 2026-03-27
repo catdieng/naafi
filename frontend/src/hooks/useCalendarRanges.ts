@@ -1,4 +1,4 @@
-import { useEffect, useEffectEvent, useState } from "react";
+import { useCallback, useEffect, useEffectEvent, useState } from "react";
 import type { View } from "react-big-calendar";
 
 interface UseCalendarRangeReturn {
@@ -55,13 +55,13 @@ export const useCalendarRanges = (): UseCalendarRangeReturn => {
 	const minTime = setHour(currentDate, HOURS.start);
 	const maxTime = setHour(currentDate, HOURS.end);
 
-	const setRanges = (start: Date, end: Date) => {
+	const setRanges = useCallback((start: Date, end: Date) => {
 		setSelectedRanges([setHour(start, HOURS.start), setHour(end, HOURS.end)]);
-	};
+	}, []);
 
-	const onViewChange = (view: View) => setCurrentView(view);
+	const onViewChange = useCallback((view: View) => setCurrentView(view), []);
 
-	const onNavigate = (date: Date) => {
+	const onNavigate = useCallback((date: Date) => {
 		setCurrentDate(date);
 
 		if (currentView === "month") {
@@ -73,12 +73,12 @@ export const useCalendarRanges = (): UseCalendarRangeReturn => {
 		} else {
 			setRanges(date, date);
 		}
-	};
+	}, [currentView, setRanges]);
 
-	const onRangeChange = (range: any) => {
+	const onRangeChange = useCallback((range: any) => {
 		const [start, end] = normalizeRange(range);
 		setRanges(start, end);
-	};
+	}, [setRanges]);
 
 	const onNavigateDate = useEffectEvent(() => {
 		onNavigate(new Date());

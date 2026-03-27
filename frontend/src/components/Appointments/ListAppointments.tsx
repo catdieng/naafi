@@ -1,28 +1,25 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Calendar } from "react-big-calendar";
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+
 import {
 	type ApiError,
 	type AppointmentPublic,
 	AppointmentsService,
 } from "@/client";
-import { useCalendarLocalizer } from "@/hooks/useCalendarLocalizer";
+import { useAppointmentContext } from "@/components/Appointments/ProviderAppointment";
+import {
+	Calendar,
+	type CalendarCellRange,
+	type CalendarEvent,
+	type OnCellClick,
+	type OnEventClick,
+	type OnEventDrop,
+	type OnEventResize,
+} from "@/components/Calendar";
 import { useCalendarRanges } from "@/hooks/useCalendarRanges";
 import useCustomToast from "@/hooks/useCustomToast";
 import { dateToDatetimeLocal, handleError } from "@/utils";
-import EventAppointment from "./EventAppointment";
-import { useAppointmentContext } from "./ProviderAppointment";
 
-const DnDCalendar = withDragAndDrop<CalendarEvent, object>(Calendar);
-
-interface CalendarEvent {
-	id: number;
-	start: Date;
-	end: Date;
-	full_name?: string;
-}
-
-export interface ListAppointments {
+interface ListAppointments {
 	onSelectedEvent?: (event: AppointmentPublic | undefined) => void;
 }
 
@@ -33,26 +30,12 @@ function getAppointments({ start, end }: { start: string; end: string }) {
 	};
 }
 
-export default function ListAppointments({
-	onSelectedEvent,
-}: ListAppointments) {
-	const localizer = useCalendarLocalizer();
+function ListAppointments({ onSelectedEvent }: ListAppointments) {
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
+	const { selectedRanges, onRangeChange } = useCalendarRanges();
 	const { setSelectedAppointment, setSelectedSlot, setMode } =
 		useAppointmentContext();
-
-	const {
-		currentDate,
-		currentView,
-		selectedRanges,
-		minTime,
-		maxTime,
-		onNavigate,
-		onRangeChange,
-		onViewChange,
-	} = useCalendarRanges();
-
 	const { data: appointments } = useQuery({
 		...getAppointments({
 			start: selectedRanges?.[0].toISOString() ?? "",
@@ -81,54 +64,53 @@ export default function ListAppointments({
 		onError: handleError,
 	});
 
-	const onEventDrop = ({ event, start, end }: any) => {
+	const onEventDrop: OnEventDrop | OnEventResize = (
+		eventId: string,
+		newStart: Date,
+		newEnd: Date,
+	) => {
 		mutation.mutate({
-			id: event.id,
+			id: Number(eventId),
 			data: {
-				start: dateToDatetimeLocal(start),
-				end: dateToDatetimeLocal(end),
+				start: dateToDatetimeLocal(newStart),
+				end: dateToDatetimeLocal(newEnd),
 			},
 		});
 	};
 
-	const onSelectEvent = (event: any) => {
-		const selected = appointments?.results.find((a) => a.id === event?.id);
+	const onSelectEvent: OnEventClick = (event: CalendarEvent) => {
+		const selected = appointments?.results.find(
+			(a) => a.id === Number(event?.id),
+		);
 		setMode("view");
 		setSelectedAppointment(selected || null);
 		onSelectedEvent?.(selected);
 	};
 
-	const onSelectedSlot = (slot: { start: Date; end: Date }) => {
+	const onSelectedSlot: OnCellClick = (range: CalendarCellRange) => {
 		setSelectedAppointment(null);
-		setSelectedSlot({ start: slot.start, end: slot.end });
+		setSelectedSlot({ start: range.start, end: range.end });
 	};
 
-	if (!localizer) return <div>Loading calendar...</div>;
-
 	return (
-		<DnDCalendar
-			view={currentView}
-			date={currentDate}
-			localizer={localizer}
-			events={
+		<Calendar
+			initialEvents={
 				appointments?.results.map((a) => ({
-					id: a.id,
+					id: a.id.toString(),
 					start: new Date(a.start),
 					end: new Date(a.end),
-					full_name: a?.customer?.full_name,
+					title: a?.customer?.full_name ?? "",
 				})) ?? []
 			}
-			min={minTime}
-			max={maxTime}
+			startHour={8}
+			endHour={17}
+			onCellClick={onSelectedSlot}
+			onEventClick={onSelectEvent}
 			onEventDrop={onEventDrop}
-			onRangeChange={onRangeChange}
-			onView={onViewChange}
-			onNavigate={onNavigate}
-			selectable
-			onSelectEvent={onSelectEvent}
-			onSelectSlot={onSelectedSlot}
-			components={{ event: EventAppointment }}
-			style={{ height: "calc(100vh - 110px)", width: "100%" }}
+			onEventResize={onEventDrop}
+			onViewRangeChange={onRangeChange}
 		/>
 	);
 }
+
+export default ListAppointments;

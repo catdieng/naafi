@@ -11,9 +11,6 @@ import { ApiError, OpenAPI } from "./client";
 import { CustomProvider } from "./components/ui/provider";
 import { routeTree } from "./routeTree.gen";
 
-import "react-big-calendar/lib/sass/styles.scss";
-import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-
 OpenAPI.BASE = import.meta.env.VITE_API_URL;
 OpenAPI.TOKEN = async () => {
 	return localStorage.getItem("access_token") || "";

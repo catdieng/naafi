@@ -201,7 +201,6 @@ const AddCategory = () => {
 											name={field.name}
 											value={field.value}
 											onValueChange={({ value }) => {
-												console.log("value", value);
 												field.onChange(value.map(String));
 											}}
 											onInteractOutside={() => field.onBlur()}

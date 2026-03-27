@@ -261,7 +261,6 @@ export const CustomersService = {
 	deleteVehicle(
 		data: CustomersDeleteVehicleData,
 	): CancelablePromise<CustomersDeleteVehicleResponse> {
-		console.log("data", data);
 		return __request(OpenAPI, {
 			method: "DELETE",
 			url: "/api/v1/customers/{customer_pk}/vehicles/{id}/",
