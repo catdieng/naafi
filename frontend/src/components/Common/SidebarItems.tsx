@@ -12,7 +12,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link as RouterLink } from "@tanstack/react-router";
 import { FaBuilding, FaCar, FaFileInvoice } from "react-icons/fa";
 import {
-	FiActivity,
 	FiBox,
 	FiCalendar,
 	FiDollarSign,

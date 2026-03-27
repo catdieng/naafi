@@ -2,23 +2,28 @@ import { Box } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import { Select } from "chakra-react-select";
 import { useEffect, useEffectEvent, useState } from "react";
-import { type Control, Controller } from "react-hook-form";
+import {
+	type Control,
+	type FieldValues,
+	type Path,
+	Controller,
+} from "react-hook-form";
 import { CustomersService, type VehiclePublic } from "@/client";
 import { Field } from "../ui/field";
 import AddVehicule from "../Vehicles/AddVehicule";
 
-export interface SelectVehicleProps {
+export interface SelectVehicleProps<TFieldValues extends FieldValues> {
 	required?: boolean;
 	disabled?: boolean;
-	name: string;
-	control: Control<any>;
+	name: Path<TFieldValues>;
+	control: Control<TFieldValues>;
 	label?: string;
 	vehicle?: VehiclePublic | null;
 	customerId: number;
 	placeholder?: string;
 }
 
-const SelectVehicle = ({
+function SelectVehicle<TFieldValues extends FieldValues>({
 	required,
 	disabled,
 	customerId,
@@ -27,7 +32,7 @@ const SelectVehicle = ({
 	control,
 	label,
 	placeholder,
-}: SelectVehicleProps) => {
+}: SelectVehicleProps<TFieldValues>) {
 	const [vehiculeList, setVehiculeList] = useState<
 		{ label: string; value: number }[]
 	>([]);
@@ -121,6 +126,6 @@ const SelectVehicle = ({
 			/>
 		</Box>
 	);
-};
+}
 
 export default SelectVehicle;

@@ -1,25 +1,30 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AsyncSelect } from "chakra-react-select";
 import { useCallback, useEffect, useEffectEvent, useState } from "react";
-import { type Control, Controller } from "react-hook-form";
+import {
+	type Control,
+	type FieldValues,
+	type Path,
+	Controller,
+} from "react-hook-form";
 import { debounce, ItemsService } from "@/client";
 import AddItem from "../Items/AddItem";
 import { Field } from "../ui/field";
 
-export interface SelectServiceProps {
-	name: string;
-	control: Control<any>;
+export interface SelectServiceProps<TFieldValues extends FieldValues> {
+	name: Path<TFieldValues>;
+	control: Control<TFieldValues>;
 	label?: string;
 	services?: { label: string; value: string }[];
 	placeholder?: string;
 }
 
-export const SelectService = ({
+export const SelectService = <TFieldValues extends FieldValues,>({
 	name,
 	control,
 	label,
 	placeholder,
-}: SelectServiceProps) => {
+}: SelectServiceProps<TFieldValues>) => {
 	const queryClient = useQueryClient();
 	const [serviceList, setServiceList] = useState<
 		{ label: string; value: string }[]
@@ -105,7 +110,9 @@ export const SelectService = ({
 								})
 								.filter(Boolean)}
 							onChange={(options) => {
-								const ids = options.map((o) => o.value); // extract only IDs
+								const ids = (options ?? [])
+									.filter((o): o is NonNullable<(typeof options)[number]> => o != null)
+									.map((o) => o.value);
 								field.onChange(ids);
 							}}
 							defaultOptions={serviceList ?? []}

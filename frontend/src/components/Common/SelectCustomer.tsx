@@ -1,22 +1,27 @@
 import { Box, Combobox, useListCollection } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useEffectEvent } from "react";
-import { type Control, Controller } from "react-hook-form";
+import {
+	type Control,
+	type FieldValues,
+	type Path,
+	Controller,
+} from "react-hook-form";
 import { type CustomerPublic, CustomersService } from "@/client";
 import AddCustomer from "../Customers/AddCustomer";
 import { Field } from "../ui/field";
 
-export interface SelectCustomerProps {
+export interface SelectCustomerProps<TFieldValues extends FieldValues> {
 	required?: boolean;
-	name: string;
-	control: Control<any>;
+	name: Path<TFieldValues>;
+	control: Control<TFieldValues>;
 	label?: string;
 	customer?: { id: number; full_name: string } | CustomerPublic | null;
 	placeholder?: string;
 	onClear?: () => void;
 }
 
-export const SelectCustomer = ({
+export function SelectCustomer<TFieldValues extends FieldValues>({
 	required,
 	customer,
 	name,
@@ -24,7 +29,7 @@ export const SelectCustomer = ({
 	label,
 	placeholder,
 	onClear,
-}: SelectCustomerProps) => {
+}: SelectCustomerProps<TFieldValues>) {
 	const queryClient = useQueryClient();
 
 	const { collection, set } = useListCollection<{
@@ -182,4 +187,4 @@ export const SelectCustomer = ({
 			/>
 		</Box>
 	);
-};
+}

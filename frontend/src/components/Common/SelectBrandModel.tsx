@@ -1,7 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AsyncCreatableSelect } from "chakra-react-select";
 import { useCallback, useEffect, useState } from "react";
-import { type Control, Controller } from "react-hook-form";
+import {
+	type Control,
+	type FieldValues,
+	type Path,
+	Controller,
+} from "react-hook-form";
 import {
 	type ApiError,
 	BrandsService,
@@ -17,23 +22,23 @@ interface OptionType {
 	value: number;
 }
 
-interface SelectBrandModelProps {
+interface SelectBrandModelProps<TFieldValues extends FieldValues> {
 	required?: boolean;
 	brandId?: number;
-	name: string;
-	control: Control<any>;
+	name: Path<TFieldValues>;
+	control: Control<TFieldValues>;
 	label?: string;
 	placeholder?: string;
 }
 
-const SelectBrandModel = ({
+function SelectBrandModel<TFieldValues extends FieldValues>({
 	brandId,
 	control,
 	label,
 	name,
 	placeholder,
 	required,
-}: SelectBrandModelProps) => {
+}: SelectBrandModelProps<TFieldValues>) {
 	const queryClient = useQueryClient();
 	const { showSuccessToast } = useCustomToast();
 	const [modelList, setModelList] = useState<OptionType[]>([]);
@@ -133,6 +138,6 @@ const SelectBrandModel = ({
 			}}
 		/>
 	);
-};
+}
 
 export default SelectBrandModel;

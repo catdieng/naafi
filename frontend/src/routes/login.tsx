@@ -1,10 +1,9 @@
-import { Container, Image, Input, Text } from "@chakra-ui/react";
+import { Container, Icon, Image, Input, Text } from "@chakra-ui/react";
 import {
 	createFileRoute,
 	Link as RouterLink,
 	redirect,
 } from "@tanstack/react-router";
-import { useId } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { FiLock, FiMail } from "react-icons/fi";
 import type { Body_login_login_access_token as AccessToken } from "@/client";
@@ -54,9 +53,6 @@ function Login() {
 		}
 	};
 
-	const usernameId = useId();
-	const passwordId = useId();
-
 	return (
 		<Container
 			as="form"
@@ -80,9 +76,9 @@ function Login() {
 				invalid={!!errors.username}
 				errorText={errors.username?.message || !!error}
 			>
-				<InputGroup w="100%" startElement={<FiMail />}>
+				<InputGroup w="100%" startElement={<Icon as={FiMail} />}>
 					<Input
-						id={usernameId}
+						id="login-username"
 						{...register("username", {
 							required: "Username is required",
 							pattern: emailPattern,
@@ -93,8 +89,9 @@ function Login() {
 				</InputGroup>
 			</Field>
 			<PasswordInput
-				type={passwordId}
-				startElement={<FiLock />}
+				type="password"
+				id="login-password"
+				startElement={<Icon as={FiLock} />}
 				{...register("password", passwordRules())}
 				placeholder="Password"
 				errors={errors}
