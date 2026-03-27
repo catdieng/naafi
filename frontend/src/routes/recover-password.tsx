@@ -1,4 +1,4 @@
-import { Container, Heading, Icon, Input, Text } from "@chakra-ui/react";
+import { Container, Heading, Input, Text } from "@chakra-ui/react";
 import { useMutation } from "@tanstack/react-query";
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -75,7 +75,7 @@ function RecoverPassword() {
 				A password recovery email will be sent to the registered account.
 			</Text>
 			<Field invalid={!!errors.email} errorText={errors.email?.message}>
-				<InputGroup w="100%" startElement={<Icon as={FiMail} />}>
+				<InputGroup w="100%" startElement={<FiMail />}>
 					<Input
 						id="recover-password-email"
 						{...register("email", {

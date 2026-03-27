@@ -1,7 +1,8 @@
-import { Button, Menu } from "@chakra-ui/react";
+import { Menu } from "@chakra-ui/react";
 import type { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { FiColumns } from "react-icons/fi";
+import { Button } from "../ui/button";
 
 function ColumnVisibilityControl<TData>({ table }: { table: Table<TData> }) {
 	const allColumns = useMemo(() => table.getAllLeafColumns(), [table]);

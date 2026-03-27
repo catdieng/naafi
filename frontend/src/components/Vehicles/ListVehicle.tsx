@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Text } from "@chakra-ui/react";
+import { ButtonGroup, Text } from "@chakra-ui/react";
 import { useQuery } from "@tanstack/react-query";
 import type { ColumnDef, VisibilityState } from "@tanstack/react-table";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import {
 	type VehiclePublic,
 } from "@/client";
 import DrfList from "../Common/DRFList";
+import { Button } from "../ui/button";
 
 interface VehicleListProps {
 	customerId: number;

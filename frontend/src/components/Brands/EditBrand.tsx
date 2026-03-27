@@ -1,4 +1,4 @@
-import { Button, DialogTitle, Input, Text, VStack } from "@chakra-ui/react";
+import { DialogTitle, Input, Text, VStack } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useId } from "react";
@@ -12,6 +12,7 @@ import {
 import type { ApiError } from "@/client/core/ApiError";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
+import { Button } from "../ui/button";
 import {
 	DialogActionTrigger,
 	DialogBody,

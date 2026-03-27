@@ -52,15 +52,23 @@ export const ColorModeButton = React.forwardRef<
 	ColorModeButtonProps
 >(function ColorModeButton(props, ref) {
 	const { toggleColorMode } = useColorMode();
+	const hoverColor = useColorModeValue("black", "white");
+	const hoverIconColor = useColorModeValue("white", "black");
 	return (
 		<ClientOnly fallback={<Skeleton boxSize="8" />}>
 			<IconButton
+				mx={1}
 				onClick={toggleColorMode}
 				variant="ghost"
 				aria-label="Toggle color mode"
-				size="sm"
+				size="xs"
 				ref={ref}
 				{...props}
+				_hover={{
+					bg: hoverColor,
+					color: hoverIconColor,
+					_icon: { color: hoverIconColor },
+				}}
 				css={{
 					_icon: {
 						width: "5",

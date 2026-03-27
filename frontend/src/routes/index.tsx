@@ -18,10 +18,7 @@ import { Switch } from "@/components/ui/switch";
 import HeroImage from "/assets/images/hero.png";
 import NafiIcon from "/assets/images/naafi-icon.svg";
 
-// -----------------------------
-// ROUTE
-// -----------------------------
-export const Route = createFileRoute("/_layout/home")({
+export const Route = createFileRoute("/")({
 	component: RouteComponent,
 });
 

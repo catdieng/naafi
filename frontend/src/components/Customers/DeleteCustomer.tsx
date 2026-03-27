@@ -1,4 +1,4 @@
-import { Button, DialogTitle, Text } from "@chakra-ui/react";
+import { DialogTitle, Text } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { FiTrash2 } from "react-icons/fi";
@@ -15,6 +15,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
+import { Button } from "../ui/button";
 
 interface DeleteCustomerProps {
 	id: number;

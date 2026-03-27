@@ -26,6 +26,7 @@ import { RiSidebarFoldLine, RiSidebarUnfoldLine } from "react-icons/ri";
 import type { UserPublic } from "@/client";
 import SidebarItem from "@/components/Common/SidebarItem";
 import { useNav } from "@/providers/NavbarProvider";
+import { useColorModeValue } from "../ui/color-mode";
 import UserMenu from "./UserMenu";
 
 const items = [{ icon: FiHome, title: "Dashboard", path: "/" }];
@@ -44,6 +45,8 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 	const { isFolded, toggle, width } = useNav();
 	const queryClient = useQueryClient();
 	const currentUser = queryClient.getQueryData<UserPublic>(["currentUser"]);
+
+	const textColor = useColorModeValue("gray.900", "gray.100");
 
 	const finalItems: Item[] = currentUser?.tenant_id
 		? [
@@ -115,12 +118,17 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 									alignSelf="center"
 									size="sm"
 									fontWeight="bold"
-									color="gray.400"
+									color={textColor}
 								></Icon>
 							</Box>
 
 							{!isFolded && (
-								<Text ml={1} fontWeight="medium" fontSize="sm" color="#585858">
+								<Text
+									ml={1}
+									fontWeight="medium"
+									fontSize="sm"
+									color={textColor}
+								>
 									Settings
 								</Text>
 							)}

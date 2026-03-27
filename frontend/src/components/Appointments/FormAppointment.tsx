@@ -1,4 +1,4 @@
-import { Button, HStack, Input, Textarea } from "@chakra-ui/react";
+import { HStack, Input, Textarea } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
@@ -10,6 +10,7 @@ import {
 import { SelectCustomer } from "../Common/SelectCustomer";
 import { SelectService } from "../Common/SelectService";
 import SelectVehicle from "../Common/SelectVehicle";
+import { Button } from "../ui/button";
 import { DialogBody, DialogFooter } from "../ui/dialog";
 import { Field } from "../ui/field";
 

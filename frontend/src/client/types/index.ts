@@ -4,6 +4,7 @@ export * from "./brands.type";
 export * from "./categories.type";
 export * from "./commons.type";
 export * from "./customers.type";
+export * from "./dashboard.type";
 export * from "./expenses.type";
 export * from "./invoice-item-taxes.type";
 export * from "./invoice-items.type";

@@ -1,4 +1,4 @@
-import { Button, DialogTitle, Text } from "@chakra-ui/react";
+import { DialogTitle, Text } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { BrandsService } from "@/client";
@@ -12,6 +12,7 @@ import {
 	DialogRoot,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
+import { Button } from "../ui/button";
 
 interface DeleteBrandProps {
 	id: number;

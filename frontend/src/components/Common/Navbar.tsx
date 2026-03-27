@@ -1,11 +1,13 @@
-import { Flex, Image, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { Link } from "@tanstack/react-router";
 
 import { useNav } from "@/providers/NavbarProvider";
-import NafiIcon from "/assets/images/naafi-icon.svg";
+import NaafiIcon from "../Logo/NaafiIcon";
+import { useColorModeValue } from "../ui/color-mode";
 
 function Navbar() {
 	const display = useBreakpointValue({ base: "none", md: "flex" });
+	const textColor = useColorModeValue("black", "white");
 	const { isFolded } = useNav();
 
 	return (
@@ -13,7 +15,7 @@ function Navbar() {
 			display={display}
 			justify="space-between"
 			position="sticky"
-			color="white"
+			color={textColor}
 			align="center"
 			w="100%"
 			top={0}
@@ -21,10 +23,10 @@ function Navbar() {
 		>
 			<Link to="/">
 				<Flex gap={2} alignItems="center">
-					<Image src={NafiIcon} alt="Logo" width="32px" />{" "}
+					<NaafiIcon />
 					<Text
 						textStyle="xl"
-						color="black"
+						color={textColor}
 						fontWeight="bold"
 						opacity={isFolded ? 0 : 1}
 						transform={isFolded ? "translateX(-8px)" : "translateX(0)"}

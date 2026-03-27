@@ -1,4 +1,4 @@
-import { Button, DialogTitle, Text } from "@chakra-ui/react";
+import { DialogTitle, Text } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import useCustomToast from "@/hooks/useCustomToast";
+import { Button } from "../ui/button";
 
 const DeleteUser = ({ id }: { id: string }) => {
 	const [isOpen, setIsOpen] = useState(false);

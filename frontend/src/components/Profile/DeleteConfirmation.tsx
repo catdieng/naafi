@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Text } from "@chakra-ui/react";
+import { ButtonGroup, Text } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -18,6 +18,7 @@ import {
 import useAuth from "@/hooks/useAuth";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
+import { Button } from "../ui/button";
 
 const DeleteConfirmation = () => {
 	const [isOpen, setIsOpen] = useState(false);

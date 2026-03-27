@@ -1,21 +1,27 @@
-import { Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { ColorModeButton } from "../ui/color-mode";
 
 interface PageHeaderProps {
 	title: string;
 	description?: string;
 }
 
-const PageHeader = ({ title, description }: PageHeaderProps) => {
+const PageHeader = ({ title }: PageHeaderProps) => {
 	return (
-		<Flex my={2} direction="column" gap={2}>
+		<Flex
+			my={2}
+			direction="row"
+			gap={2}
+			justify="space-between"
+			align="center"
+			w="100%"
+		>
 			<Heading size="xl" fontWeight="bold">
 				{title}
 			</Heading>
-			{description && (
-				<Text fontSize="sm" color="gray.400" fontWeight="medium">
-					{description}
-				</Text>
-			)}
+			<Box ml="auto">
+				<ColorModeButton />
+			</Box>
 		</Flex>
 	);
 };

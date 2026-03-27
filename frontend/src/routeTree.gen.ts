@@ -14,12 +14,12 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RecoverPasswordRouteImport } from './routes/recover-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LayoutRouteImport } from './routes/_layout'
-import { Route as LayoutIndexRouteImport } from './routes/_layout/index'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as LayoutSettingRouteImport } from './routes/_layout/setting'
 import { Route as LayoutProfileRouteImport } from './routes/_layout/profile'
 import { Route as LayoutItemsRouteImport } from './routes/_layout/items'
-import { Route as LayoutHomeRouteImport } from './routes/_layout/home'
 import { Route as LayoutExpensesRouteImport } from './routes/_layout/expenses'
+import { Route as LayoutDashboardRouteImport } from './routes/_layout/dashboard'
 import { Route as LayoutCustomersRouteImport } from './routes/_layout/customers'
 import { Route as LayoutCategoriesRouteImport } from './routes/_layout/categories'
 import { Route as LayoutCalendarRouteImport } from './routes/_layout/calendar'
@@ -56,10 +56,10 @@ const LayoutRoute = LayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LayoutIndexRoute = LayoutIndexRouteImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => LayoutRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutSettingRoute = LayoutSettingRouteImport.update({
   id: '/setting',
@@ -76,14 +76,14 @@ const LayoutItemsRoute = LayoutItemsRouteImport.update({
   path: '/items',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutHomeRoute = LayoutHomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => LayoutRoute,
-} as any)
 const LayoutExpensesRoute = LayoutExpensesRouteImport.update({
   id: '/expenses',
   path: '/expenses',
+  getParentRoute: () => LayoutRoute,
+} as any)
+const LayoutDashboardRoute = LayoutDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => LayoutRoute,
 } as any)
 const LayoutCustomersRoute = LayoutCustomersRouteImport.update({
@@ -146,7 +146,7 @@ const LayoutInvoicesInvoiceIdEditRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof LayoutIndexRoute
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -154,8 +154,8 @@ export interface FileRoutesByFullPath {
   '/calendar': typeof LayoutCalendarRoute
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
+  '/dashboard': typeof LayoutDashboardRoute
   '/expenses': typeof LayoutExpensesRoute
-  '/home': typeof LayoutHomeRoute
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
@@ -169,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/invoices/$invoiceId/edit': typeof LayoutInvoicesInvoiceIdEditRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -176,12 +177,11 @@ export interface FileRoutesByTo {
   '/calendar': typeof LayoutCalendarRoute
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
+  '/dashboard': typeof LayoutDashboardRoute
   '/expenses': typeof LayoutExpensesRoute
-  '/home': typeof LayoutHomeRoute
   '/items': typeof LayoutItemsRoute
   '/profile': typeof LayoutProfileRoute
   '/setting': typeof LayoutSettingRoute
-  '/': typeof LayoutIndexRoute
   '/invoices/new': typeof LayoutInvoicesNewRoute
   '/settings/billing': typeof LayoutSettingsBillingRoute
   '/settings/organization': typeof LayoutSettingsOrganizationRoute
@@ -193,6 +193,7 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/recover-password': typeof RecoverPasswordRoute
@@ -201,12 +202,11 @@ export interface FileRoutesById {
   '/_layout/calendar': typeof LayoutCalendarRoute
   '/_layout/categories': typeof LayoutCategoriesRoute
   '/_layout/customers': typeof LayoutCustomersRoute
+  '/_layout/dashboard': typeof LayoutDashboardRoute
   '/_layout/expenses': typeof LayoutExpensesRoute
-  '/_layout/home': typeof LayoutHomeRoute
   '/_layout/items': typeof LayoutItemsRoute
   '/_layout/profile': typeof LayoutProfileRoute
   '/_layout/setting': typeof LayoutSettingRoute
-  '/_layout/': typeof LayoutIndexRoute
   '/_layout/invoices/new': typeof LayoutInvoicesNewRoute
   '/_layout/settings/billing': typeof LayoutSettingsBillingRoute
   '/_layout/settings/organization': typeof LayoutSettingsOrganizationRoute
@@ -227,8 +227,8 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/categories'
     | '/customers'
+    | '/dashboard'
     | '/expenses'
-    | '/home'
     | '/items'
     | '/profile'
     | '/setting'
@@ -242,6 +242,7 @@ export interface FileRouteTypes {
     | '/invoices/$invoiceId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/login'
     | '/recover-password'
     | '/reset-password'
@@ -249,12 +250,11 @@ export interface FileRouteTypes {
     | '/calendar'
     | '/categories'
     | '/customers'
+    | '/dashboard'
     | '/expenses'
-    | '/home'
     | '/items'
     | '/profile'
     | '/setting'
-    | '/'
     | '/invoices/new'
     | '/settings/billing'
     | '/settings/organization'
@@ -265,6 +265,7 @@ export interface FileRouteTypes {
     | '/invoices/$invoiceId/edit'
   id:
     | '__root__'
+    | '/'
     | '/_layout'
     | '/login'
     | '/recover-password'
@@ -273,12 +274,11 @@ export interface FileRouteTypes {
     | '/_layout/calendar'
     | '/_layout/categories'
     | '/_layout/customers'
+    | '/_layout/dashboard'
     | '/_layout/expenses'
-    | '/_layout/home'
     | '/_layout/items'
     | '/_layout/profile'
     | '/_layout/setting'
-    | '/_layout/'
     | '/_layout/invoices/new'
     | '/_layout/settings/billing'
     | '/_layout/settings/organization'
@@ -290,6 +290,7 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
   RecoverPasswordRoute: typeof RecoverPasswordRoute
@@ -334,12 +335,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_layout/': {
-      id: '/_layout/'
+    '/': {
+      id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof LayoutIndexRouteImport
-      parentRoute: typeof LayoutRoute
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_layout/setting': {
       id: '/_layout/setting'
@@ -362,18 +363,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutItemsRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/home': {
-      id: '/_layout/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof LayoutHomeRouteImport
-      parentRoute: typeof LayoutRoute
-    }
     '/_layout/expenses': {
       id: '/_layout/expenses'
       path: '/expenses'
       fullPath: '/expenses'
       preLoaderRoute: typeof LayoutExpensesRouteImport
+      parentRoute: typeof LayoutRoute
+    }
+    '/_layout/dashboard': {
+      id: '/_layout/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof LayoutDashboardRouteImport
       parentRoute: typeof LayoutRoute
     }
     '/_layout/customers': {
@@ -460,12 +461,11 @@ interface LayoutRouteChildren {
   LayoutCalendarRoute: typeof LayoutCalendarRoute
   LayoutCategoriesRoute: typeof LayoutCategoriesRoute
   LayoutCustomersRoute: typeof LayoutCustomersRoute
+  LayoutDashboardRoute: typeof LayoutDashboardRoute
   LayoutExpensesRoute: typeof LayoutExpensesRoute
-  LayoutHomeRoute: typeof LayoutHomeRoute
   LayoutItemsRoute: typeof LayoutItemsRoute
   LayoutProfileRoute: typeof LayoutProfileRoute
   LayoutSettingRoute: typeof LayoutSettingRoute
-  LayoutIndexRoute: typeof LayoutIndexRoute
   LayoutInvoicesNewRoute: typeof LayoutInvoicesNewRoute
   LayoutSettingsBillingRoute: typeof LayoutSettingsBillingRoute
   LayoutSettingsOrganizationRoute: typeof LayoutSettingsOrganizationRoute
@@ -480,12 +480,11 @@ const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutCalendarRoute: LayoutCalendarRoute,
   LayoutCategoriesRoute: LayoutCategoriesRoute,
   LayoutCustomersRoute: LayoutCustomersRoute,
+  LayoutDashboardRoute: LayoutDashboardRoute,
   LayoutExpensesRoute: LayoutExpensesRoute,
-  LayoutHomeRoute: LayoutHomeRoute,
   LayoutItemsRoute: LayoutItemsRoute,
   LayoutProfileRoute: LayoutProfileRoute,
   LayoutSettingRoute: LayoutSettingRoute,
-  LayoutIndexRoute: LayoutIndexRoute,
   LayoutInvoicesNewRoute: LayoutInvoicesNewRoute,
   LayoutSettingsBillingRoute: LayoutSettingsBillingRoute,
   LayoutSettingsOrganizationRoute: LayoutSettingsOrganizationRoute,
@@ -500,6 +499,7 @@ const LayoutRouteWithChildren =
   LayoutRoute._addFileChildren(LayoutRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   LoginRoute: LoginRoute,
   RecoverPasswordRoute: RecoverPasswordRoute,

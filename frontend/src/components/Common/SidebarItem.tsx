@@ -1,5 +1,6 @@
 import { Box, Flex, Icon, Text } from "@chakra-ui/react";
 import type { IconType } from "react-icons";
+import { useColorModeValue } from "../ui/color-mode";
 import { Tooltip } from "../ui/tooltip";
 
 interface SidebarItemProps {
@@ -21,6 +22,8 @@ export default function SidebarItem({
 	px = 6,
 	py = 2,
 }: SidebarItemProps) {
+	const textColor = useColorModeValue("gray.9	00", "gray.100");
+	const hoverColor = useColorModeValue("gray.100", "gray.900");
 	return (
 		<Flex
 			as="button"
@@ -28,23 +31,24 @@ export default function SidebarItem({
 			gap={4}
 			px={px}
 			py={py}
+			alignContent="center"
 			alignItems="center"
 			verticalAlign="middle"
 			cursor="pointer"
 			fontSize="sm"
 			onClick={onClick}
-			_hover={{ bg: "gray.subtle" }}
+			_hover={{ bg: hoverColor }}
 		>
 			<Tooltip content={label} disabled={!isFolded}>
 				<Box alignItems="center" py={1}>
-					<Icon as={icon} size="sm" color="gray.400" />
+					<Icon as={icon} size="sm" color={textColor} />
 				</Box>
 			</Tooltip>
 
 			<Text
 				fontWeight="medium"
 				fontSize="sm"
-				color="#585858"
+				color={textColor}
 				whiteSpace="nowrap"
 				opacity={isFolded ? 0 : 1}
 				transform={isFolded ? "translateX(-8px)" : "translateX(0)"}

@@ -2,8 +2,8 @@ import { Box, type ConditionalValue, HStack } from "@chakra-ui/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useDrfTable } from "../../hooks/useDrfTable";
 import ColumnVisibilityControl from "./ColumnVisibilityControl";
+import DrfTable from "./DRFTable";
 import DRFToolbar from "./DRFToolbar";
-import DrfTable from "./DrfTable";
 
 interface DrfListProps<T> {
 	title?: string;

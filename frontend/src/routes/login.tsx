@@ -1,4 +1,4 @@
-import { Container, Icon, Image, Input, Text } from "@chakra-ui/react";
+import { Container, Image, Input, Text } from "@chakra-ui/react";
 import {
 	createFileRoute,
 	Link as RouterLink,
@@ -76,7 +76,7 @@ function Login() {
 				invalid={!!errors.username}
 				errorText={errors.username?.message || !!error}
 			>
-				<InputGroup w="100%" startElement={<Icon as={FiMail} />}>
+				<InputGroup w="100%" startElement={<FiMail />}>
 					<Input
 						id="login-username"
 						{...register("username", {
@@ -91,7 +91,7 @@ function Login() {
 			<PasswordInput
 				type="password"
 				id="login-password"
-				startElement={<Icon as={FiLock} />}
+				startElement={<FiLock />}
 				{...register("password", passwordRules())}
 				placeholder="Password"
 				errors={errors}

@@ -1,5 +1,4 @@
 import {
-	Button,
 	createListCollection,
 	DialogActionTrigger,
 	DialogTitle,
@@ -23,6 +22,7 @@ import {
 import type { ApiError } from "@/client/core/ApiError";
 import useCustomToast from "@/hooks/useCustomToast";
 import { handleError } from "@/utils";
+import { Button } from "../ui/button";
 import {
 	DialogBody,
 	DialogCloseTrigger,
