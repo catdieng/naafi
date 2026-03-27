@@ -23,7 +23,6 @@ import { Route as LayoutExpensesRouteImport } from './routes/_layout/expenses'
 import { Route as LayoutCustomersRouteImport } from './routes/_layout/customers'
 import { Route as LayoutCategoriesRouteImport } from './routes/_layout/categories'
 import { Route as LayoutCalendarRouteImport } from './routes/_layout/calendar'
-import { Route as LayoutActivityRouteImport } from './routes/_layout/activity'
 import { Route as LayoutInvoicesIndexRouteImport } from './routes/_layout/invoices/index'
 import { Route as LayoutSettingsVehiclesBrandsRouteImport } from './routes/_layout/settings/vehicles-brands'
 import { Route as LayoutSettingsUsersRouteImport } from './routes/_layout/settings/users'
@@ -102,11 +101,6 @@ const LayoutCalendarRoute = LayoutCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => LayoutRoute,
 } as any)
-const LayoutActivityRoute = LayoutActivityRouteImport.update({
-  id: '/activity',
-  path: '/activity',
-  getParentRoute: () => LayoutRoute,
-} as any)
 const LayoutInvoicesIndexRoute = LayoutInvoicesIndexRouteImport.update({
   id: '/invoices/',
   path: '/invoices/',
@@ -157,7 +151,6 @@ export interface FileRoutesByFullPath {
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/activity': typeof LayoutActivityRoute
   '/calendar': typeof LayoutCalendarRoute
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
@@ -180,7 +173,6 @@ export interface FileRoutesByTo {
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/activity': typeof LayoutActivityRoute
   '/calendar': typeof LayoutCalendarRoute
   '/categories': typeof LayoutCategoriesRoute
   '/customers': typeof LayoutCustomersRoute
@@ -206,7 +198,6 @@ export interface FileRoutesById {
   '/recover-password': typeof RecoverPasswordRoute
   '/reset-password': typeof ResetPasswordRoute
   '/signup': typeof SignupRoute
-  '/_layout/activity': typeof LayoutActivityRoute
   '/_layout/calendar': typeof LayoutCalendarRoute
   '/_layout/categories': typeof LayoutCategoriesRoute
   '/_layout/customers': typeof LayoutCustomersRoute
@@ -233,7 +224,6 @@ export interface FileRouteTypes {
     | '/recover-password'
     | '/reset-password'
     | '/signup'
-    | '/activity'
     | '/calendar'
     | '/categories'
     | '/customers'
@@ -256,7 +246,6 @@ export interface FileRouteTypes {
     | '/recover-password'
     | '/reset-password'
     | '/signup'
-    | '/activity'
     | '/calendar'
     | '/categories'
     | '/customers'
@@ -281,7 +270,6 @@ export interface FileRouteTypes {
     | '/recover-password'
     | '/reset-password'
     | '/signup'
-    | '/_layout/activity'
     | '/_layout/calendar'
     | '/_layout/categories'
     | '/_layout/customers'
@@ -409,13 +397,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutCalendarRouteImport
       parentRoute: typeof LayoutRoute
     }
-    '/_layout/activity': {
-      id: '/_layout/activity'
-      path: '/activity'
-      fullPath: '/activity'
-      preLoaderRoute: typeof LayoutActivityRouteImport
-      parentRoute: typeof LayoutRoute
-    }
     '/_layout/invoices/': {
       id: '/_layout/invoices/'
       path: '/invoices'
@@ -476,7 +457,6 @@ declare module '@tanstack/react-router' {
 }
 
 interface LayoutRouteChildren {
-  LayoutActivityRoute: typeof LayoutActivityRoute
   LayoutCalendarRoute: typeof LayoutCalendarRoute
   LayoutCategoriesRoute: typeof LayoutCategoriesRoute
   LayoutCustomersRoute: typeof LayoutCustomersRoute
@@ -497,7 +477,6 @@ interface LayoutRouteChildren {
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutActivityRoute: LayoutActivityRoute,
   LayoutCalendarRoute: LayoutCalendarRoute,
   LayoutCategoriesRoute: LayoutCategoriesRoute,
   LayoutCustomersRoute: LayoutCustomersRoute,

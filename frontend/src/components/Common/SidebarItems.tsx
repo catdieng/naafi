@@ -49,7 +49,6 @@ const SidebarItems = ({ onClose }: SidebarItemsProps) => {
 	const finalItems: Item[] = currentUser?.tenant_id
 		? [
 				...items,
-				{ icon: FiActivity, title: "Activity", path: "/activity" },
 				{ icon: FiCalendar, title: "Calendar", path: "/calendar" },
 				{ icon: FiUsers, title: "Customers", path: "/customers" },
 				{ icon: FiBox, title: "Items", path: "/items" },
