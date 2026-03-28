@@ -89,14 +89,19 @@ const FormInvoice = ({
 
 	const mutation = useMutation({
 		mutationFn: (data: InvoiceCreate | InvoiceUpdate) => {
+			const requestBody = {
+				...data,
+				issue_date: data.issue_date === "" ? null : data.issue_date,
+				due_date: data.due_date === "" ? null : data.due_date,
+			};
 			if (mode === "new")
 				return InvoicesService.createInvoice({
-					requestBody: data as InvoiceCreate,
+					requestBody: requestBody as InvoiceCreate,
 				});
 			if (!invoice) throw new Error("No invoice loaded");
 			return InvoicesService.updateInvoice({
 				id: invoice.id,
-				requestBody: data as InvoiceUpdate,
+				requestBody: requestBody as InvoiceUpdate,
 			});
 		},
 		onSuccess: () => {
@@ -123,7 +128,7 @@ const FormInvoice = ({
 					</Button>
 					<Button
 						loading={mutation.isPending}
-						disabled={!methods.formState.isValid}
+						disabled={mutation.isPending}
 						onClick={() => {
 							methods.handleSubmit(onSubmit)();
 						}}
@@ -167,6 +172,7 @@ const FormInvoice = ({
 								<Box py={4} gap={2}>
 									<EditInvoiceInfo />
 									<SelectCustomer
+										required
 										customer={invoice?.customer}
 										control={methods.control}
 										label="Customer"

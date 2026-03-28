@@ -46,6 +46,21 @@ export const nullableDateSchema = (message = "Invalid date") =>
 		])
 		.optional();
 
+/** Optional date: allows "" from empty date inputs (nullableDateSchema alone rejects ""). */
+export const optionalNullableDateSchema = (message = "Invalid date") =>
+	z
+		.union([
+			z.literal(""),
+			z.literal(null),
+			z
+				.string()
+				.regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format (YYYY-MM-DD)")
+				.refine((val) => !Number.isNaN(Date.parse(val)), {
+					message,
+				}),
+		])
+		.optional();
+
 // Transform function: ISO → datetime-local
 export const transformIsoToDatetimeLocal = (isoString: string): string => {
 	const date = new Date(isoString);

@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { CustomerSimpleSchema } from "./customers.schema";
-import { nullableDateSchema } from "./date.schema";
+import { optionalNullableDateSchema } from "./date.schema";
 import { InvoiceItemSchema } from "./invoice-items.schema";
 
 // Principal Schema
 export const InvoiceBaseSchema = z.object({
 	id: z.number().int().positive().optional(),
 	invoice_number: z.string().optional(),
-	issue_date: nullableDateSchema("Invalid issue date"),
-	due_date: nullableDateSchema("Invalid due date"),
+	issue_date: optionalNullableDateSchema("Invalid issue date"),
+	due_date: optionalNullableDateSchema("Invalid due date"),
 	customer_id: z.string().nullable().optional(),
 	owner_id: z.number().int().positive().optional(),
 	subtotal: z.number(),
@@ -30,6 +30,7 @@ export const InvoiceCreateSchema = InvoiceBaseSchema.omit({
 	total_tax: true,
 }).extend({
 	items: z.array(InvoiceItemSchema).min(1),
+	customer_id: z.string().min(1, "Please select a customer"),
 });
 
 // Updation Schema
@@ -43,6 +44,7 @@ export const InvoiceUpdateSchema = InvoiceBaseSchema.omit({
 	total_tax: true,
 }).extend({
 	items: z.array(InvoiceItemSchema).min(1),
+	customer_id: z.string().min(1, "Please select a customer"),
 });
 
 // Schema for API responses (includes related objects)

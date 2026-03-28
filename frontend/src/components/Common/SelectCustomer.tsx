@@ -3,9 +3,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useEffectEvent } from "react";
 import {
 	type Control,
+	Controller,
 	type FieldValues,
 	type Path,
-	Controller,
 } from "react-hook-form";
 import { type CustomerPublic, CustomersService } from "@/client";
 import AddCustomer from "../Customers/AddCustomer";
@@ -34,13 +34,13 @@ export function SelectCustomer<TFieldValues extends FieldValues>({
 
 	const { collection, set } = useListCollection<{
 		label: string;
-		value: number;
+		value: string;
 	}>({
 		initialItems: customer
 			? [
 					{
 						label: customer.full_name,
-						value: customer.id,
+						value: String(customer.id),
 					},
 				]
 			: [],
@@ -69,7 +69,7 @@ export function SelectCustomer<TFieldValues extends FieldValues>({
 			set(
 				data.results.map((el) => ({
 					label: el.full_name,
-					value: el.id,
+					value: String(el.id),
 				})),
 			);
 		} else {
@@ -93,7 +93,7 @@ export function SelectCustomer<TFieldValues extends FieldValues>({
 			set([
 				{
 					label: customer.full_name,
-					value: customer.id,
+					value: String(customer.id),
 				},
 			]);
 		}
@@ -101,8 +101,10 @@ export function SelectCustomer<TFieldValues extends FieldValues>({
 
 	const onCustomersLoaded = useEffectEvent(() => {
 		set(
-			customers?.results.map((c) => ({ label: c.full_name, value: c.id })) ??
-				[],
+			customers?.results.map((c) => ({
+				label: c.full_name,
+				value: String(c.id),
+			})) ?? [],
 		);
 	});
 
@@ -140,7 +142,7 @@ export function SelectCustomer<TFieldValues extends FieldValues>({
 										set([
 											{
 												label: newCustomer.full_name,
-												value: newCustomer.id,
+												value: String(newCustomer.id),
 											},
 										]);
 										field.onChange(String(newCustomer.id));
@@ -154,8 +156,11 @@ export function SelectCustomer<TFieldValues extends FieldValues>({
 								collection={collection}
 								value={field.value ? [field.value] : []}
 								onValueChange={({ value }) => {
-									field.onChange(value[0]);
-									if (!value[0]) {
+									const id = value[0];
+									field.onChange(
+										id != null && id !== "" ? String(id) : "",
+									);
+									if (!id) {
 										onClear?.();
 									}
 								}}
