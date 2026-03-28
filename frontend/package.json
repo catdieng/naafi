@@ -19,7 +19,6 @@
     "@tanstack/react-query-devtools": "^5.95.2",
     "@tanstack/react-router": "^1.168.7",
     "@tanstack/react-table": "^8.21.3",
-    "@types/react-big-calendar": "^1.16.3",
     "axios": "^1.13.6",
     "chakra-dayzed-datepicker": "^3.0.0",
     "chakra-react-select": "^6.1.1",

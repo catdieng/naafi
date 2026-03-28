@@ -29,7 +29,7 @@ import { useNav } from "@/providers/NavbarProvider";
 import { useColorModeValue } from "../ui/color-mode";
 import UserMenu from "./UserMenu";
 
-const items = [{ icon: FiHome, title: "Dashboard", path: "/" }];
+const items = [{ icon: FiHome, title: "Dashboard", path: "/dashboard" }];
 
 interface SidebarItemsProps {
 	onClose?: () => void;

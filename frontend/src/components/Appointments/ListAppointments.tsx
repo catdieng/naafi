@@ -102,6 +102,7 @@ function ListAppointments({ onSelectedEvent }: ListAppointments) {
 					title: a?.customer?.full_name ?? "",
 				})) ?? []
 			}
+			weekStartsOn={1}
 			startHour={8}
 			endHour={17}
 			onCellClick={onSelectedSlot}

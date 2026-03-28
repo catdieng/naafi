@@ -72,7 +72,6 @@ const EditInvoiceItemRow = ({
 
 	const handleServiceChange = useCallback(
 		(serviceId: string) => {
-			console.log("handleServiceChange", serviceId);
 			if (serviceId) {
 				const service = services.find((s) => String(s.id) === serviceId);
 				if (service) {
@@ -140,7 +139,6 @@ const EditInvoiceItemRow = ({
 								collection={collection}
 								value={field.value ? [String(field.value)] : []}
 								onValueChange={({ value }) => {
-									console.log("onChange", value);
 									handleServiceChange(value[0]);
 									field.onChange(value[0] ?? "");
 								}}

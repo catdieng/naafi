@@ -4,17 +4,20 @@ import {
 	Container,
 	Flex,
 	Heading,
+	IconButton,
 	Image,
 	SimpleGrid,
 	Stack,
 	Text,
 } from "@chakra-ui/react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { FiLogOut } from "react-icons/fi";
 import ThemeToggle from "@/components/Common/ThemeToggle";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Switch } from "@/components/ui/switch";
+import useAuth, { isLoggedIn } from "@/hooks/useAuth";
 import HeroImage from "/assets/images/hero.png";
 import NafiIcon from "/assets/images/naafi-icon.svg";
 
@@ -57,6 +60,7 @@ function MarketingLayout({ children }: { children: React.ReactNode }) {
 export default function Navbar() {
 	const bg = useColorModeValue("white", "black");
 	const color = useColorModeValue("black", "white");
+	const { logout } = useAuth();
 
 	return (
 		<Box
@@ -80,6 +84,26 @@ export default function Navbar() {
 						</Text>
 					</Flex>
 					<Stack direction="row" gap={1}>
+						{!isLoggedIn() ? (
+							<Button variant="outline" colorScheme="gray" size="sm" asChild>
+								<Link to="/login">Login</Link>
+							</Button>
+						) : (
+							<>
+								<Button variant="outline" colorScheme="gray" size="sm" asChild>
+									<Link to="/dashboard">Dashboard</Link>
+								</Button>
+								<IconButton
+									aria-label="Logout"
+									variant="outline"
+									colorScheme="gray"
+									size="sm"
+									onClick={logout}
+								>
+									<FiLogOut />
+								</IconButton>
+							</>
+						)}
 						<ThemeToggle />
 					</Stack>
 				</Flex>
