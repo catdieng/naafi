@@ -89,10 +89,20 @@ const FormInvoice = ({
 
 	const mutation = useMutation({
 		mutationFn: (data: InvoiceCreate | InvoiceUpdate) => {
+			const invoiceNumber = data.invoice_number?.trim();
 			const requestBody = {
 				...data,
 				issue_date: data.issue_date === "" ? null : data.issue_date,
 				due_date: data.due_date === "" ? null : data.due_date,
+				invoice_number:
+					invoiceNumber && invoiceNumber.length > 0 ? invoiceNumber : null,
+				items: data.items.map((item) => ({
+					...item,
+					unit_price:
+						item.unit_price === "" || item.unit_price == null
+							? "0"
+							: String(item.unit_price),
+				})),
 			};
 			if (mode === "new")
 				return InvoicesService.createInvoice({

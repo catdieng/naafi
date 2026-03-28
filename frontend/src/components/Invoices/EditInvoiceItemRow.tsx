@@ -209,20 +209,18 @@ const EditInvoiceItemRow = ({
 					errorText={errors.items?.[index]?.unit_price?.message}
 				>
 					<Controller
-						disabled
 						control={control}
 						name={`items.${index}.unit_price`}
 						render={({ field }) => (
 							<NumberInput.Root
 								size="xs"
-								disabled={field.disabled}
 								name={field.name}
-								value={String(field.value) ?? ""}
+								value={String(field.value ?? "")}
 								onValueChange={({ value }) => {
-									field.onChange(value);
+									field.onChange(value ?? "0");
 								}}
 							>
-								<NumberInput.Input onBlur={field.onBlur} />
+								<NumberInput.Input readOnly onBlur={field.onBlur} />
 							</NumberInput.Root>
 						)}
 					/>

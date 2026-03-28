@@ -33,6 +33,12 @@ class InvoiceSerializer(serializers.ModelSerializer):
         queryset=Customer.objects.all(), source="customer", write_only=True
     )
     customer = CustomerSimpleSerializer(read_only=True)
+    invoice_number = serializers.CharField(
+        max_length=50,
+        allow_blank=True,
+        allow_null=True,
+        required=False,
+    )
 
     class Meta:
         model = Invoice
