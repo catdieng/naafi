@@ -71,7 +71,7 @@ const FormInvoice = ({
 			methods.setValue("customer_id", String(invoice.customer.id));
 			methods.setValue("invoice_number", invoice.invoice_number);
 			methods.setValue("issue_date", invoice.issue_date);
-			methods.setValue("due_date", invoice.issue_date);
+			methods.setValue("due_date", invoice.due_date);
 			methods.setValue(
 				"items",
 				invoice.items?.map((el) => ({
@@ -122,8 +122,9 @@ const FormInvoice = ({
 						Cancel
 					</Button>
 					<Button
+						loading={mutation.isPending}
+						disabled={!methods.formState.isValid}
 						onClick={() => {
-							console.log("here");
 							methods.handleSubmit(onSubmit)();
 						}}
 					>
